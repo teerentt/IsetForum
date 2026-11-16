@@ -1,134 +1,142 @@
-
-.comment-word {
-  margin-left: -2px;
-}
 h2 {
   font-size: 25px;
-  font-weight: 800;
-  letter-spacing: -.8px;
-  line-height: 1.45;
-  margin: 8px 25px 9px 0;
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: -.7px;
+  color: var(--navy);
+  margin: 10px 25px 12px 0;
+}
+.modal-intro {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted);
+  margin: 0 0 24px;
 }
 .modal-eyebrow {
   margin-top: 22px;
 }
-.modal-intro {
-  font-size: 12px;
-  color: #779ac7;
-  line-height: 1.9;
-  margin-bottom: 23px;
-}
 label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #5580b9;
   display: block;
-  margin-bottom: 17px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 550;
+  margin-bottom: 18px;
 }
-input:not([type=radio]),textarea,select {
+input:not([type=radio]), textarea, select {
   display: block;
   width: 100%;
-  margin-top: 7px;
-  padding: 12px 13px;
-  border: 1px solid #e1e9f4;
+  margin-top: 8px;
+  border: 1px solid var(--line);
   border-radius: 7px;
-  color: #416a9f;
-  background: #fbfafd;
+  background: var(--input);
+  padding: 12px;
   font-size: 12px;
+  color: var(--text);
+}
+input::placeholder, textarea::placeholder {
+  color: var(--subtle);
 }
 textarea {
   resize: vertical;
-  line-height: 1.8;
   min-height: 80px;
-}
-input::placeholder,textarea::placeholder {
-  color: #9db6d7;
+  line-height: 1.8;
 }
 .form-row {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: 15px;
+  gap: 14px;
 }
 .optional {
+  color: var(--subtle);
   font-size: 9px;
-  color: #9cb5d6;
   font-weight: 400;
-  margin-left: 5px;
+  padding-left: 5px;
+}
+.form-note {
+  background: var(--input);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 12px;
+  font-size: 10px;
+  line-height: 1.9;
+  color: var(--subtle);
+  margin-bottom: 18px;
+}
+.form-error {
+  color: var(--danger);
+  font-size: 11px;
+  line-height: 1.8;
+  background: #c76c7410;
+  border: 1px solid #c76c7425;
+  border-radius: 7px;
+  padding: 11px;
 }
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  border-top: 1px solid #e7eff9;
-  padding-top: 20px;
+  align-items: center;
+  gap: 9px;
+  border-top: 1px solid var(--line);
   margin-top: 23px;
-}
-.form-note {
-  font-size: 10px;
-  color: #86a5ce;
-  line-height: 1.9;
-  background: #f6f9fc;
-  border-radius: 7px;
-  padding: 12px;
-  margin: 0 0 18px;
-}
-.form-error {
-  font-size: 11px;
-  color: #6089be;
-  background: #f0f5fb;
-  border-radius: 7px;
-  padding: 10px;
-  margin-bottom: 15px;
+  padding-top: 20px;
 }
 .visibility-options {
-  border: 0;
   padding: 0;
+  border: 0;
   margin: 4px 0 18px;
 }
 .visibility-options legend {
+  color: var(--muted);
   font-size: 11px;
-  color: #5580b9;
-  font-weight: 600;
+  font-weight: 550;
   margin-bottom: 10px;
 }
 .visibility-options label {
   display: flex;
   align-items: center;
-  gap: 12px;
-  border: 1px solid #e3eaf4;
-  border-radius: 9px;
-  padding: 14px;
+  gap: 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 15px;
   margin-bottom: 9px;
   cursor: pointer;
 }
 .visibility-options label.checked {
-  border-color: #b3c7e2;
-  background: #f6f9fd;
+  background: var(--primary-soft);
+  border-color: var(--primary);
 }
 .visibility-options input {
-  accent-color: #8facd1;
+  accent-color: var(--primary);
 }
 .visibility-options app-icon {
-  color: #8aa8cf;
+  color: var(--primary);
 }
 .visibility-options strong {
-  display: block;
+  color: var(--navy);
   font-size: 12px;
-  color: #4875b0;
+  display: block;
 }
 .visibility-options small {
-  display: block;
-  font-weight: 400;
+  color: var(--muted);
   font-size: 10px;
-  line-height: 1.7;
-  color: #7e9fca;
-  margin-top: 3px;
+  font-weight: 400;
+  line-height: 1.8;
+  display: block;
+  margin-top: 4px;
 }
 .detail-title {
-  font-size: 24px !important;
+  font-size: 25px;
 }
 .detail-author {
-  margin: 18px 0;
+  margin: 20px 0;
+}
+.detail-body {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 2;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 16px 0 25px;
 }
 .detail-actions {
   display: flex;
@@ -141,17 +149,18 @@ input::placeholder,textarea::placeholder {
 }
 .comments-section {
   margin-top: 27px;
-  border-top: 1px solid #e8eff9;
+  border-top: 1px solid var(--line);
   padding-top: 23px;
 }
 .comments-section h3 {
+  color: var(--navy);
   font-size: 14px;
-  margin-bottom: 22px;
+  margin-bottom: 23px;
 }
-.comments-section h3>span {
-  font-size: 10px;
-  color: #8facd1;
+.comments-section h3 > span {
   padding-left: 6px;
+  font-size: 10px;
+  color: var(--subtle);
 }
 .comment {
   display: flex;
@@ -159,68 +168,80 @@ input::placeholder,textarea::placeholder {
   gap: 10px;
   margin-bottom: 20px;
 }
-.comment>div {
+.comment > div {
   flex: 1;
   min-width: 0;
 }
 .comment strong {
   font-size: 11px;
-  color: #6089be;
+  color: var(--text);
 }
 .comment p {
-  color: #88a7cf;
-  line-height: 1.9;
+  color: var(--muted);
   font-size: 12px;
+  line-height: 1.9;
   margin-top: 5px;
-  overflow-wrap: anywhere;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .no-comments {
+  color: var(--subtle);
   font-size: 12px;
-  color: #94afd3;
-  margin: 0 0 22px;
+  margin-bottom: 23px;
 }
 .comments-section form {
   margin-top: 25px;
 }
-.comments-section label {
-  margin-bottom: 0;
-}
 .modal-date {
-  width: 49px;
-  height: 61px;
+  width: 48px;
+  height: 62px;
 }
 .modal-date b {
   font-size: 24px;
 }
-@media (max-width:700px) {
-  .comment-word {
-    display: none;
-  }
-  h2 {
-    font-size: 23px;
+.event-details {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 13px 0;
+  margin: 20px 0;
+}
+.event-details p {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.event-details app-icon {
+  height: 18px;
+  width: 18px;
+  color: var(--primary);
+}
+@media (max-width: 700px) {
+  h2, .detail-title {
+    font-size: 22px;
   }
   .modal-intro {
     font-size: 11px;
   }
-  .modal-actions {
-    gap: 8px;
-  }
-  .modal-actions button {
-    font-size: 10px;
-    padding: 9px 12px;
-  }
   .form-row {
     grid-template-columns: 1fr;
+    gap: 0;
   }
-  .form-row label {
-    margin-bottom: 15px;
+  .modal-actions {
+    gap: 7px;
   }
-  .form-note {
+  .modal-actions button {
     font-size: 9px;
+    padding: 10px;
   }
-  .detail-title {
-    font-size: 21px !important;
+  .visibility-options label {
+    padding: 12px;
+  }
+  .detail-body {
+    font-size: 12px;
   }
   .detail-actions button {
     font-size: 9px;

@@ -1,8 +1,21 @@
-<header class="topbar"><div class="brand-area"><button class="icon-button mobile-menu" aria-label="Afficher la navigation" (click)="ui.mobileNav.set(!ui.mobileNav())"><app-icon name="menu" /></button><a class="brand" href="/forum/accueil" (click)="$event.preventDefault(); ui.navigate('feed')"><span class="brand-mark"><app-icon name="cap" /></span>Iset<span class="brand-secondary">Forum</span><span class="brand-dot">.</span></a><span class="brand-caption">ISET Radès</span></div>
-  <nav class="header-nav" aria-label="Accès rapide"><button class="icon-button" [class.active]="ui.view() === 'feed'" (click)="ui.navigate('feed')" aria-label="Fil d’actualité"><app-icon name="home" /></button><button class="icon-button" [class.active]="ui.view() === 'communities'" (click)="ui.navigate('communities')" aria-label="Découvrir les communautés"><app-icon name="compass" /></button><button class="icon-button" [class.active]="ui.view() === 'resources'" (click)="ui.navigate('resources')" aria-label="Ressources pédagogiques"><app-icon name="book" /></button></nav>
-  <label class="global-search"><app-icon name="search" /><input #search type="search" placeholder="Rechercher sur IsetForum…" aria-label="Rechercher des publications ou communautés" [ngModel]="ui.query()" (ngModelChange)="ui.query.set($event)" /><kbd>/</kbd></label>
-  <div class="header-account"><button class="icon-button saved-header" (click)="ui.navigate('saved')" aria-label="Mes favoris"><app-icon name="bookmark" /></button><span class="header-divider"></span>
-    @if (forum.person(); as person) { <div class="profile-button"><span class="avatar">{{ person.initials }}</span><span class="profile-text"><strong>{{ person.name }}</strong><small>{{ person.role === 'student' ? 'Étudiant' : person.role === 'professor' ? 'Enseignant' : 'Administrateur' }}</small></span></div><button class="icon-button logout-button" (click)="ui.logout()" aria-label="Se déconnecter" title="Se déconnecter"><app-icon name="logout" /></button> }
-    @else { <button class="primary-button login-button" (click)="ui.login()">Se connecter</button> }
+<header class="topbar">
+  <div class="brand-area">
+    <button class="icon-button mobile-menu" aria-label="Afficher la navigation" (click)="ui.mobileNav.set(!ui.mobileNav())"><app-icon name="menu" /></button>
+    <a class="brand" href="/forum/accueil" (click)="$event.preventDefault(); ui.navigate('feed')"><span class="logo-tile"><img src="assets/logo-iset.png" alt="Logo de l’ISET Radès" /></span><span>Iset<span class="brand-secondary">Forum</span><b>.</b></span></a>
+  </div>
+  <nav class="header-nav" aria-label="Accès rapide">
+    <button class="icon-button" [class.active]="ui.view() === 'feed'" (click)="ui.navigate('feed')" aria-label="Fil d’actualité" title="Fil d’actualité"><app-icon name="home" /></button>
+    <button class="icon-button" [class.active]="ui.view() === 'communities'" (click)="ui.navigate('communities')" aria-label="Découvrir les communautés" title="Communautés"><app-icon name="users" /></button>
+    <button class="icon-button" [class.active]="ui.view() === 'resources'" (click)="ui.navigate('resources')" aria-label="Ressources pédagogiques" title="Ressources"><app-icon name="book" /></button>
+  </nav>
+  <label class="global-search"><app-icon name="search" /><input #search type="search" placeholder="Rechercher une idée, une communauté…" aria-label="Rechercher des publications ou communautés" [ngModel]="ui.query()" (ngModelChange)="ui.query.set($event)" /><kbd>/</kbd></label>
+  <div class="header-account">
+    <button class="icon-button theme-button" (click)="theme.toggle()" [attr.aria-label]="theme.theme() === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'" [title]="theme.theme() === 'dark' ? 'Mode clair' : 'Mode sombre'"><app-icon [name]="theme.theme() === 'dark' ? 'sun' : 'moon'" /></button>
+    <button class="icon-button saved-header" (click)="ui.navigate('saved')" aria-label="Mes favoris" title="Mes favoris"><app-icon name="bookmark" /></button>
+    <span class="header-divider"></span>
+    @if (forum.person(); as person) {
+      <div class="profile-button"><span class="avatar">{{ person.initials }}</span><span class="profile-text"><strong>{{ person.name }}</strong><small>{{ person.role === 'student' ? 'Étudiant' : person.role === 'professor' ? 'Enseignant' : 'Administrateur' }}</small></span></div>
+      <button class="icon-button logout-button" (click)="ui.logout()" aria-label="Se déconnecter" title="Se déconnecter"><app-icon name="logout" /></button>
+    } @else { <button class="primary-button login-button" (click)="ui.login()">Se connecter<app-icon name="arrow" /></button> }
   </div>
 </header>

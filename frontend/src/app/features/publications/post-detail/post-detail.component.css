@@ -1,2 +1,4 @@
 @import '../../../shared/styles/dialog-content.css';
-:host { display: block; }
+:host {
+  display: block;
+}

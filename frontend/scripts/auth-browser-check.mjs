@@ -38,6 +38,9 @@ try {
   await page.evaluate(() => document.fonts.ready);
   await mkdir('artifacts', { recursive: true });
   await page.screenshot({ path: 'artifacts/login-desktop.png', fullPage: true });
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+  const logo = page.locator('.auth-logo img');
+  assert.ok(await logo.evaluate(image => image.complete && image.naturalWidth > 0), 'Le logo ISET doit être chargé.');
 
   // Show a useful backend outage message, with no fixture-based login fallback.
   await page.route('**/api/auth/csrf', route => route.abort());
@@ -65,6 +68,13 @@ try {
   await page.locator('.profile-text strong').filter({ hasText: 'Lina Ben Ali' }).waitFor();
   await page.evaluate(() => document.fonts.ready);
   await page.screenshot({ path: 'artifacts/forum-desktop.png', fullPage: true });
+  await page.getByRole('button', { name: 'Activer le mode clair', exact: true }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
+  await page.screenshot({ path: 'artifacts/forum-light.png', fullPage: true, animations: 'disabled' });
+  await page.reload();
+  await page.locator('.post-card').first().waitFor();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light', 'Le thème doit persister après actualisation.');
+  await page.getByRole('button', { name: 'Activer le mode sombre', exact: true }).click();
 
   // Forum fixtures remain functional under the real authenticated identity.
   await page.getByRole('searchbox').fill('Spring Boot');
@@ -79,8 +89,11 @@ try {
   await page.getByText('Merci pour cette fiche !', { exact: true }).waitFor();
   await page.getByRole('button', { name: 'Fermer', exact: true }).click();
   await page.locator('.main-nav').getByRole('button', { name: 'Communautés', exact: true }).click();
+  await page.locator('.community-card').first().waitFor();
+  await page.screenshot({ path: 'artifacts/communities-desktop.png', fullPage: true });
   await page.locator('.community-card').getByRole('button', { name: 'Cercle de recherche IA', exact: true }).click();
   await page.getByRole('heading', { name: 'Un espace réservé aux membres.' }).waitFor();
+  await page.screenshot({ path: 'artifacts/private-community.png', fullPage: true });
   assert.equal(await page.getByText('Cercle de lecture : comprendre les mécanismes d’attention', { exact: true }).count(), 0);
   await page.getByRole('button', { name: 'Demander à rejoindre', exact: true }).click();
   await page.getByText('Votre demande attend l’approbation d’un administrateur.', { exact: true }).waitFor();
@@ -97,6 +110,9 @@ try {
   await page.getByLabel('Votre message').fill('Un premier message dans notre espace privé.');
   await page.getByRole('button', { name: 'Partager avec la communauté', exact: true }).click();
   await page.getByRole('button', { name: 'Notre projet de test', exact: true }).waitFor();
+  await page.locator('.main-nav').getByRole('button', { name: /^Ressources/ }).click();
+  await page.locator('.post-card').first().waitFor();
+  await page.screenshot({ path: 'artifacts/resources-desktop.png', fullPage: true });
 
   await page.getByRole('button', { name: 'Se déconnecter', exact: true }).click();
   await page.getByRole('heading', { name: /Heureux de vous/ }).waitFor();
@@ -118,6 +134,8 @@ try {
   // Registration writes a fresh database account and returns to login.
   const email = `browser-${Date.now()}@isetforum.test`;
   await page.getByRole('link', { name: 'Rejoindre IsetForum' }).click();
+  await page.getByLabel('Nom complet').waitFor();
+  await page.screenshot({ path: 'artifacts/register-desktop.png', fullPage: true });
   await page.getByLabel('Nom complet').fill('Étudiant Navigateur');
   await page.getByLabel('Adresse e-mail', { exact: true }).fill(email);
   await page.locator('#password').fill('IsetForumDev!2026');
@@ -136,6 +154,10 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.getByRole('link', { name: 'Continuer en visiteur' }).click();
   await page.locator('.post-card').first().waitFor();
+  await page.getByRole('searchbox').fill('algèbre');
+  await page.locator('.post-card .title-button').filter({ hasText: 'algèbre' }).waitFor();
+  assert.equal(await page.locator('.post-card').count(), 1);
+  await page.getByRole('searchbox').fill('');
   assert.equal(await page.getByText('Notre projet de test', { exact: true }).count(), 0);
   await page.screenshot({ path: 'artifacts/forum-mobile.png', fullPage: true });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Mobile feed overflows horizontally');

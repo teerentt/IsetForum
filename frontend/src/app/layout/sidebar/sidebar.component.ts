@@ -3,4 +3,11 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 import { ForumUiService } from '../../core/services/forum-ui.service';
 
 @Component({ selector: 'app-sidebar', standalone: true, imports: [IconComponent], templateUrl: './sidebar.component.html', styleUrl: './sidebar.component.css' })
-export class SidebarComponent { readonly ui = inject(ForumUiService); readonly forum = this.ui.forum; }
+export class SidebarComponent {
+  readonly ui = inject(ForumUiService);
+  readonly forum = this.ui.forum;
+  showFeed(sort: 'latest' | 'popular' | 'following') {
+    this.ui.navigate('feed');
+    this.ui.sort.set(sort);
+  }
+}
