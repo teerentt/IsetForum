@@ -1,6 +1,6 @@
 ﻿# IsetForum — frontend Angular
 
-Interface française et thème bleu/blanc pour l’Institut supérieur des études technologiques de Radès.
+Interface française pour l’Institut supérieur des études technologiques de Radès, inspirée de la maquette fournie : thème sombre par défaut, mode clair bleu/blanc et logo ISET Radès.
 
 ## Démarrer
 
@@ -20,6 +20,7 @@ Le proxy de développement transfère `/api/**` vers `http://127.0.0.1:8080`. Sp
 
 - `core/models/` : contrats des comptes et du forum.
 - `core/services/` : authentification HTTP, état local du forum et interactions de présentation.
+- `core/services/theme.service.ts` : thème sombre/clair, conservé après actualisation.
 - `core/guards/` et `core/interceptors/` : accès aux routes et expiration des sessions.
 - `core/demo/` : contenu fictif du forum, séparé des vrais comptes.
 - `layout/` : en-tête, navigation latérale, découvertes et structure du forum.
@@ -29,6 +30,8 @@ Le proxy de développement transfère `/api/**` vers `http://127.0.0.1:8080`. Sp
 - `shared/styles/` : styles communs du contenu des dialogues.
 
 Chaque composant possède ses propres fichiers TypeScript, HTML et CSS. Les variables du thème et les éléments visuels communs sont dans `src/styles.css`.
+
+Le logo utilisé par l’application est servi depuis `public/assets/logo-iset.png`. Les fichiers de référence d’origine, `maquette.png` et `logo_iset.png`, sont conservés dans `src/app/assets/`. Le bouton de thème est disponible sur la connexion et dans l’en-tête du forum. Le fil, les communautés, les ressources, les favoris et les dialogues partagent les mêmes variables visuelles.
 
 ## Ce qui utilise MySQL
 
