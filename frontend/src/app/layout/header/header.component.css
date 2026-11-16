@@ -1,0 +1,230 @@
+:host { display: block; }
+.topbar {
+  height: 83px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 36px;
+  gap: 24px;
+  border-bottom: 1px solid #e7eef8;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 215px;
+}
+.header-nav {
+  display: flex;
+  gap: 16px;
+}
+.header-nav .active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 5px 12px #f4674520;
+}
+.global-search {
+  display: flex;
+  align-items: center;
+  background: #f4f7fc;
+  border: 1px solid #ebf2fa;
+  gap: 11px;
+  padding: 0 13px;
+  border-radius: 8px;
+  height: 40px;
+  max-width: 400px;
+  flex: 1;
+  margin-left: 18px;
+  color: #8daad0;
+}
+.global-search app-icon {
+  width: 17px;
+  height: 17px;
+}
+.global-search input {
+  background: none;
+  border: 0;
+  outline: 0;
+  font-size: 11px;
+  color: #395d8d;
+  min-width: 40px;
+  width: 100%;
+  height: 100%;
+}
+.global-search input::placeholder {
+  color: #89a7cf;
+}
+.global-search:focus-within {
+  outline: 2px solid #bed0e7;
+}
+.global-search kbd {
+  border: 1px solid #dee7f3;
+  border-radius: 4px;
+  font: 11px monospace;
+  padding: 0 5px;
+  color: #94afd3;
+}
+.header-account {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.header-divider {
+  height: 25px;
+  border-left: 1px solid #e9f0f9;
+}
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  padding: 0;
+}
+.profile-text strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #2f4d74;
+}
+.profile-text small {
+  display: block;
+  margin-top: 3px;
+  text-transform: capitalize;
+  font-size: 9px;
+  color: #7c9eca;
+}
+.profile-button>app-icon {
+  width: 13px;
+  height: 13px;
+  color: #83a3cd;
+  margin-left: 8px;
+}
+.mobile-menu {
+  display: none;
+}
+@media (min-width:1500px) {
+  .brand-area {
+    min-width: 240px;
+  }
+  .topbar {
+    padding: 0 max(36px,calc((100vw - 1412px)/2));
+  }
+  .global-search {
+    max-width: 420px;
+  }
+}
+@media (max-width:1200px) {
+  .topbar {
+    padding: 0 25px;
+    gap: 18px;
+  }
+  .brand-area {
+    min-width: 180px;
+  }
+  .header-nav {
+    gap: 8px;
+  }
+  .global-search {
+    margin-left: 3px;
+  }
+}
+@media (max-width:1020px) {
+  .topbar {
+    height: 75px;
+    padding: 0 28px;
+    gap: 20px;
+  }
+  .brand-area {
+    min-width: 183px;
+  }
+  .profile-text {
+    display: none;
+  }
+  .header-account {
+    gap: 12px;
+  }
+  .header-divider {
+    display: none;
+  }
+  .header-nav {
+    gap: 10px;
+  }
+  .global-search {
+    max-width: none;
+  }
+}
+@media (max-width:700px) {
+  .topbar {
+    height: 68px;
+    padding: 0 17px;
+    gap: 10px;
+  }
+  .brand-area {
+    min-width: auto;
+    gap: 7px;
+  }
+  .mobile-menu {
+    display: inline-flex;
+    width: 27px;
+    color: #6c92c3;
+  }
+  .mobile-menu app-icon {
+    height: 19px;
+    width: 19px;
+  }
+  .header-nav {
+    display: none;
+  }
+  .global-search {
+    margin-left: 10px;
+    height: 35px;
+    gap: 6px;
+    padding: 0 9px;
+  }
+  .global-search kbd {
+    display: none;
+  }
+  .global-search input {
+    font-size: 10px;
+  }
+  .global-search app-icon {
+    width: 15px;
+    height: 15px;
+  }
+  .header-account {
+    gap: 7px;
+    margin-left: 3px;
+  }
+  .saved-header {
+    display: none;
+  }
+  .profile-button>app-icon {
+    display: none;
+  }
+  .profile-button .avatar {
+    width: 31px;
+    height: 31px;
+    font-size: 9px;
+  }
+}
+@media (max-width:380px) {
+  .global-search {
+    margin-left: 3px;
+  }
+  .topbar {
+    padding: 0 11px;
+    gap: 5px;
+  }
+}
+
+:host { position: sticky; top: 0; z-index: 20; }
+.brand-secondary { color: var(--primary); }
+.brand { font-size: 25px; }
+.profile-button { cursor: default; }
+.logout-button { width: 29px; }
+.login-button { font-size: 10px; }
+@media (max-width: 700px) { .brand { font-size: 20px; } .login-button { font-size: 8px; padding: 8px; min-height: 32px; } .logout-button { width: 23px; } .header-account { gap: 6px; } .brand-area { gap: 4px; } .global-search { margin-left: 3px; } }

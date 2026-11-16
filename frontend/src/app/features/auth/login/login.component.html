@@ -1,0 +1,19 @@
+<app-auth-layout>
+  <p class="auth-kicker">VOTRE CAMPUS, CONNECTÉ.</p>
+  <h1>Heureux de vous<br>retrouver<span>.</span></h1>
+  <p class="auth-intro">Une question, une idée, une nouvelle rencontre.<br>La suite commence ici.</p>
+  @if (registered) { <p class="auth-success" role="status"><app-icon name="check" />Votre compte a été créé. Vous pouvez vous connecter.</p> }
+  <form (ngSubmit)="submit()" #form="ngForm">
+    <label for="email">Adresse e-mail</label>
+    <div class="auth-input"><app-icon name="mail" /><input id="email" name="email" type="email" [(ngModel)]="email" required email maxlength="254" autocomplete="username" placeholder="prenom.nom@exemple.tn" #emailField="ngModel" /></div>
+    @if (emailField.touched && emailField.invalid) { <small class="field-error">Saisissez une adresse e-mail valide.</small> }
+    <label for="password">Mot de passe</label>
+    <div class="auth-input"><app-icon name="lock" /><input id="password" name="password" [type]="showPassword() ? 'text' : 'password'" [(ngModel)]="password" required maxlength="72" autocomplete="current-password" placeholder="Votre mot de passe" /><button type="button" [attr.aria-label]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'" [attr.aria-pressed]="showPassword()" (click)="showPassword.set(!showPassword())"><app-icon [name]="showPassword() ? 'eye-off' : 'eye'" /></button></div>
+    @if (error()) { <p class="auth-error" role="alert">{{ error() }}</p> }
+    <button class="auth-submit" type="submit" [disabled]="form.invalid || busy()"><span>{{ busy() ? 'Connexion en cours…' : 'Se connecter' }}</span><app-icon name="arrow" /></button>
+  </form>
+  <p class="auth-switch">Pas encore de compte ? <a routerLink="/inscription">Rejoindre IsetForum</a></p>
+  <div class="auth-divider"><span>ou découvrez le campus</span></div>
+  <a class="guest-link" routerLink="/forum/accueil"><app-icon name="globe" />Continuer en visiteur<app-icon name="arrow" /></a>
+  <p class="auth-fine-print">Un espace pour apprendre, partager et avancer ensemble.</p>
+</app-auth-layout>

@@ -1,0 +1,67 @@
+:host { display: block; }
+.info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  background: #eaf0f9;
+  color: #7599c7;
+  border-radius: 10px;
+  padding: 17px;
+  line-height: 1.8;
+  font-size: 11px;
+  margin-bottom: 20px;
+}
+.info-banner app-icon {
+  width: 19px;
+  height: 19px;
+}
+.request-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 20px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.request-card h3 {
+  font-size: 13px;
+}
+.request-card p {
+  font-size: 10px;
+  color: #7e9fca;
+  line-height: 1.7;
+  margin: 5px 0 8px;
+}
+.status-label {
+  font-size: 8px;
+  background: #eaf1fa;
+  color: #7498c6;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.request-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+}
+.request-actions button {
+  font-size: 9px;
+  padding: 8px 11px;
+  min-height: 33px;
+}
+@media (max-width:700px) {
+  .request-card {
+    padding: 17px;
+  }
+  .request-card>div:nth-child(2) {
+    max-width: calc(100% - 65px);
+  }
+  .request-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+    padding-top: 13px;
+    border-top: 1px solid #e9f0f9;
+  }
+}

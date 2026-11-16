@@ -1,0 +1,17 @@
+<aside class="sidebar" [class.mobile-open]="ui.mobileNav()" aria-label="Navigation latérale">
+  <div class="sidebar-section"><p class="eyebrow">MON CAMPUS</p><nav class="main-nav" aria-label="Navigation principale">
+    <button [class.selected]="ui.view() === 'feed' && !ui.communityId()" (click)="ui.navigate('feed')"><app-icon name="home" />Fil d’actualité<span class="nav-indicator"></span></button>
+    <button [class.selected]="ui.view() === 'communities'" (click)="ui.navigate('communities')"><app-icon name="compass" />Communautés</button>
+    <button [class.selected]="ui.view() === 'resources'" (click)="ui.navigate('resources')"><app-icon name="book" />Ressources<span class="tiny-label">NOUVEAU</span></button>
+    <button [class.selected]="ui.view() === 'saved'" (click)="ui.navigate('saved')"><app-icon name="bookmark" />Mes favoris</button>
+    @if (forum.person()?.role === 'admin') { <button [class.selected]="ui.view() === 'admin'" (click)="ui.navigate('admin')"><app-icon name="shield" />Demandes d’adhésion<span class="count-badge">{{ forum.requests().length }}</span></button> }
+  </nav></div>
+  <div class="sidebar-section community-shortcuts"><div class="section-label"><p class="eyebrow">MES COMMUNAUTÉS</p><button class="mini-button" (click)="ui.startCommunity()" aria-label="Créer une communauté"><app-icon name="plus" /></button></div>
+    @for (community of ui.joined(); track community.id) { <button class="community-shortcut" [class.selected]="ui.communityId() === community.id" (click)="ui.openCommunity(community)"><span [class]="'community-icon small ' + community.color"><app-icon [name]="community.icon" /></span><span>{{ community.name }}</span></button> }
+    @empty { <p class="sidebar-empty">Votre prochaine rencontre commence dans une communauté.</p> }
+    <button class="text-link discover-link" (click)="ui.navigate('communities')"><app-icon name="plus" />Découvrir les communautés</button>
+  </div>
+  <div class="sidebar-section tags-section"><p class="eyebrow">SUJETS POPULAIRES</p>@for (topic of ['springboot', 'design', 'mathematiques', 'collaboration']; track topic; let i = $index) { <button class="topic-link" [class.chosen]="ui.tag() === topic" (click)="ui.filterTag(topic)"><span [class]="'hash hash-' + i">#</span><span>{{ topic }}</span><span class="topic-count">{{ [128,96,74,52][i] }}</span></button> }</div>
+  <div class="sidebar-invite"><span class="invite-illustration"><app-icon name="spark" /></span><strong>Ensemble, plus loin.</strong><p>Les grandes idées naissent d’une simple conversation.</p><button (click)="ui.startCommunity()">Créer une communauté<app-icon name="arrow" /></button></div>
+  <footer class="sidebar-footer"><span class="demo-dot"></span>Forum de démonstration<p>Les publications restent dans ce navigateur.<br>Les comptes utilisent Spring Boot et MySQL.</p><span>Pour les esprits curieux. <span class="accent-text">✳</span></span></footer>
+</aside>

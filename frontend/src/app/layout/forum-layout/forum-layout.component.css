@@ -1,0 +1,57 @@
+:host { display: block; }
+.app-layout {
+  display: grid;
+  grid-template-columns: 210px minmax(0,1fr) 285px;
+  gap: 28px;
+  max-width: 1480px;
+  margin: auto;
+  padding: 29px 34px 0;
+}
+.main-content {
+  min-width: 0;
+  padding-bottom: 25px;
+}
+.main-content:focus {
+  outline: none;
+}
+@media (min-width:1500px) {
+  .app-layout {
+    grid-template-columns: 215px minmax(0,1fr) 298px;
+    gap: 32px;
+  }
+}
+@media (max-width:1200px) {
+  .app-layout {
+    grid-template-columns: 180px minmax(0,1fr) 245px;
+    gap: 20px;
+    padding: 25px 24px 0;
+  }
+}
+@media (max-width:1020px) {
+  .app-layout {
+    grid-template-columns: 190px minmax(0,1fr);
+    gap: 27px;
+    padding: 25px 28px 0;
+    max-width: 900px;
+  }
+}
+@media (max-width:700px) {
+  .app-layout {
+    display: block;
+    padding: 23px 17px 0;
+  }
+  .main-content {
+    max-width: 590px;
+    margin: auto;
+  }
+}
+@media (max-width:380px) {
+  .app-layout {
+    padding: 20px 12px 0;
+  }
+}
+
+.demo-banner { margin: -6px 0 22px; font-size: 7px; color: #7694be; letter-spacing: .6px; line-height: 1.8; }
+.demo-banner > span { display: inline-block; width: 4px; height: 4px; background: #6b9edb; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.demo-banner small { display: block; margin-top: 2px; font-size: 8px; color: #98a9bf; letter-spacing: 0; }
+@media (max-width: 700px) { .demo-banner { margin-bottom: 17px; } }
