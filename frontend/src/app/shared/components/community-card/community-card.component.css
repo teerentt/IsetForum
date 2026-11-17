@@ -1,105 +1,67 @@
 :host {
-  display: block;
-  height: 100%;
+  display:block;
+  height:100%;
 }
 .community-card {
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  transition: border-color .2s, transform .2s;
-}
-.community-card:hover {
-  border-color: var(--subtle);
-  transform: translateY(-2px);
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
 .community-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:20px;
 }
 .community-card h2 {
-  color: var(--navy);
-  font-size: 16px;
-  font-weight: 650;
-  line-height: 1.6;
+  color:var(--navy);
+  font-size:22px;
+  line-height:1.5;
 }
-.community-card > p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.9;
-  margin: 12px 0 23px;
-  flex: 1;
+.community-card>p {
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.75;
+  margin:12px 0 24px;
+  flex:1;
 }
 .community-card-bottom {
-  border-top: 1px solid var(--line);
-  padding-top: 16px;
+  border-top:1px solid var(--line);
+  padding-top:20px;
 }
-.community-card-bottom > span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  color: var(--subtle);
+.community-card-bottom>span {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14px;
+  color:var(--muted);
 }
-.community-card-bottom > span app-icon {
-  width: 14px;
-  height: 14px;
+.community-card-bottom app-icon {
+  width:18px;
+  height:18px;
 }
 .join-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  background: var(--primary-soft);
-  color: var(--primary);
-  padding: 11px;
-  border-radius: 6px;
-  font-size: 11px;
-  margin-top: 15px;
-}
-.join-button app-icon {
-  height: 14px;
-  width: 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:100%;
+  background:var(--primary-soft);
+  color:var(--primary);
+  padding:12px 16px;
+  border-radius:24px;
+  font-size:16px;
+  margin-top:16px;
 }
 .join-button.joined {
-  background: var(--surface-raised);
-  color: var(--muted);
+  background:var(--surface-raised);
+  color:var(--muted);
 }
 .privacy-note {
-  color: var(--subtle);
-  font-size: 8px;
-  line-height: 1.8;
-  margin-top: 12px;
-}
-@media (max-width: 700px) {
-  .community-card {
-    padding: 17px;
-  }
-  .community-card h2 {
-    font-size: 14px;
-  }
-  .community-card > p {
-    font-size: 10px;
-  }
-  .community-card .community-icon {
-    height: 36px;
-    width: 36px;
-  }
-  .visibility {
-    font-size: 7px;
-  }
-  .visibility app-icon {
-    height: 10px;
-    width: 10px;
-  }
-  .join-button {
-    font-size: 9px;
-  }
-  .community-card-bottom > span {
-    font-size: 9px;
-  }
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+  margin-top:16px;
 }

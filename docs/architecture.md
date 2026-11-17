@@ -53,13 +53,15 @@ frontend/src/app/
 │   ├── guards/           Accès aux routes
 │   ├── interceptors/     Expiration des sessions HTTP
 │   └── demo/             Contenus fictifs du forum
-├── layout/               En-tête, navigation, découvertes et structure des pages
-├── features/             Connexion, inscription, fil, communautés et ressources
+├── layout/               En-tête, navigation et structure des pages
+├── features/             Authentification, fil, communautés, publications, profil et administration
 └── shared/
     ├── components/       Cartes, icônes, dialogues et notifications
     └── styles/           Styles réutilisés dans les formulaires
 ```
 
 Chaque composant conserve ses fichiers TypeScript, HTML et CSS. Les couleurs communes sont définies dans `frontend/src/styles.css`. `ThemeService` gère le choix sombre/clair, conservé dans le navigateur. Le logo ISET servi à l’application se trouve dans `frontend/public/assets` ; les références fournies restent dans `frontend/src/app/assets`.
+
+Le thème initial est bleu et blanc. La navigation se limite à Accueil, Communautés et Mon profil, avec Administration selon le rôle. Les ressources sont un onglet de la communauté ; les favoris sont un onglet du profil. Chaque publication possède une route `/forum/publications/:id`, utilisable directement ou après actualisation. Les fenêtres de dialogue servent uniquement à créer une publication ou une communauté.
 
 Les comptes sont réellement connectés au backend. Le forum Angular utilise encore des données de démonstration ; les services de démonstration sont identifiés explicitement. Les API réelles des communautés et adhésions pourront être raccordées sans modifier les composants de présentation.

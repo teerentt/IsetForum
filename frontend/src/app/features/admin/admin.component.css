@@ -1,70 +1,62 @@
 :host {
-  display: block;
+  display:block;
 }
 .info-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: 11px;
-  padding: 17px;
-  background: var(--primary-soft);
-  border: 1px solid var(--line);
-  color: var(--muted);
-  border-radius: 9px;
-  margin-bottom: 20px;
-  font-size: 11px;
-  line-height: 1.9;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:20px;
+  background:var(--primary-soft);
+  color:var(--text);
+  border-radius:12px;
+  margin-bottom:24px;
+  font-size:16px;
+  line-height:1.75;
 }
 .info-banner app-icon {
-  height: 19px;
-  width: 19px;
-  color: var(--primary);
+  color:var(--primary);
+  flex-shrink:0;
 }
 .request-card {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 13px;
-  padding: 21px;
-  margin-bottom: 15px;
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:16px;
+  padding:24px;
+  margin-bottom:20px;
 }
 .request-card h3 {
-  color: var(--navy);
-  font-size: 13px;
-  font-weight: 600;
+  color:var(--navy);
+  font-size:20px;
 }
 .request-card p {
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.8;
-  margin: 6px 0 10px;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.7;
+  margin:8px 0 12px;
 }
 .status-label {
-  font-size: 8px;
-  color: var(--primary);
-  background: var(--primary-soft);
-  border-radius: 4px;
-  padding: 4px 7px;
+  font-size:14px;
+  color:var(--primary);
+  background:var(--primary-soft);
+  border-radius:16px;
+  padding:4px 10px;
 }
 .request-actions {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-left: auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-left:auto;
 }
-.request-actions button {
-  font-size: 10px;
-  padding: 9px 12px;
-  min-height: 34px;
-}
-@media (max-width: 700px) {
+@media(max-width:600px) {
   .request-card {
-    padding: 17px;
+    padding:20px;
   }
   .request-actions {
-    width: 100%;
-    border-top: 1px solid var(--line);
-    padding-top: 13px;
-    margin-top: 5px;
-    justify-content: flex-end;
+    width:100%;
+    border-top:1px solid var(--line);
+    padding-top:20px;
+    margin-top:8px;
+    justify-content:flex-end;
   }
 }

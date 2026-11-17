@@ -95,7 +95,7 @@ export class ForumDemoService {
     const community = this.community(communityId);
     if (!person || !community || !this.canPublish(community) || !title.trim() || !body.trim()) return false;
     const post: Publication = { id: crypto.randomUUID(), communityId, title: title.trim(), body: body.trim(),
-      author: person.name, initials: person.initials, role: person.role, tags: tags.split(',').map(t => t.trim().replace(/^#/, '')).filter(Boolean).slice(0, 5),
+      authorId: person.id, author: person.name, initials: person.initials, role: person.role, tags: tags.split(',').map(t => t.trim().replace(/^#/, '')).filter(Boolean).slice(0, 5),
       createdAt: Date.now(), kind, art: kind === 'resource' ? 'sql' : '', likes: 0, likedBy: [], savedBy: [], comments: [] };
     this.update(s => ({ ...s, posts: [post, ...s.posts] }));
     return true;

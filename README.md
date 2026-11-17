@@ -20,24 +20,24 @@
 
 ## Le projet
 
-IsetForum est un projet académique de forum : créer des communautés, échanger entre étudiants et enseignants, et partager des ressources pédagogiques. L’interface est en français, avec l’identité de l’ISET Radès, un thème sombre inspiré de la maquette fournie et un mode clair bleu et blanc.
+IsetForum est un projet académique de forum : créer des communautés, échanger entre étudiants et enseignants, et partager des ressources pédagogiques. L’interface française s’inspire de la simplicité de Reddit, avec l’identité de l’ISET Radès : bleu et blanc par défaut, textes lisibles et mode sombre au choix.
 
 Le projet conserve une architecture simple : un backend Spring Boot organisé en couches, un frontend Angular et une base MySQL gérée localement avec Laragon/phpMyAdmin.
 
 ## Aperçu
 
-![Fil d’actualité IsetForum — thème sombre](docs/images/forum-dark.png)
+![Accueil IsetForum — thème bleu et blanc](docs/images/forum-light.png)
 
 <details>
-  <summary>Connexion, thème clair et vue mobile</summary>
+  <summary>Connexion, thème sombre et vue mobile</summary>
 
   **Connexion**
 
   ![Connexion IsetForum](docs/images/login.png)
 
-  **Thème clair**
+  **Thème sombre**
 
-  ![Fil d’actualité en mode clair](docs/images/forum-light.png)
+  ![Fil d’actualité en mode sombre](docs/images/forum-dark.png)
 
   **Version mobile**
 
@@ -58,6 +58,18 @@ Le projet conserve une architecture simple : un backend Spring Boot organisé en
 | Pièces jointes et réinitialisation par e-mail | À implémenter | Non inclus |
 
 L’interface permet déjà de rechercher, filtrer, publier dans la démonstration, commenter et enregistrer des publications. Les données de démonstration restent dans le navigateur et sont séparées par compte. Les communautés réelles du backend ne sont pas encore affichées par Angular : ce raccordement est une prochaine étape.
+
+### Pages retenues
+
+- **Connexion / Inscription** : accès au compte et création d’un compte étudiant.
+- **Accueil** : un fil central de discussions, triées par date ou popularité.
+- **Communautés** : découverte et création des espaces publics et privés.
+- **Une communauté** : présentation, adhésion et onglets Publications / Ressources.
+- **Une publication** : lecture complète et commentaires, avec une adresse dédiée.
+- **Mon profil** : informations du compte, publications personnelles et favoris.
+- **Administration** : validation des demandes privées, réservée aux administrateurs.
+
+Le menu principal contient Accueil, Communautés et Mon profil. L’accueil utilise deux colonnes, sans panneau de suggestions à droite. Les textes courants sont en 16 px, les titres de discussion en 20–22 px et les métadonnées en 14 px. Les anciennes adresses `/forum/favoris` et `/forum/ressources` restent accessibles et mènent aux espaces correspondants.
 
 ### Règles des communautés
 

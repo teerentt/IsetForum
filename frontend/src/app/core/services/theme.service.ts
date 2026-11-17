@@ -4,11 +4,11 @@ import { inject, Injectable, signal } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
-  readonly theme = signal<'dark' | 'light'>('dark');
+  readonly theme = signal<'dark' | 'light'>('light');
 
   initialize() {
     try {
-      if (localStorage.getItem('isetforum-theme') === 'light') this.theme.set('light');
+      if (localStorage.getItem('isetforum-theme') === 'dark') this.theme.set('dark');
     } catch { /* Le thème reste utilisable sans stockage local. */ }
     this.apply();
   }

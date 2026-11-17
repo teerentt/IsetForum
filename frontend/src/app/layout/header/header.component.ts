@@ -9,6 +9,10 @@ export class HeaderComponent {
   readonly ui = inject(ForumUiService); readonly forum = this.ui.forum;
   readonly theme = inject(ThemeService);
   readonly search = viewChild.required<ElementRef<HTMLInputElement>>('search');
+  searchFor(query: string) {
+    if (this.ui.view() === 'publication' || this.ui.view() === 'admin') this.ui.navigate('feed');
+    this.ui.query.set(query);
+  }
   @HostListener('document:keydown', ['$event']) onKey(event: KeyboardEvent) {
     if (event.key === '/' && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLTextAreaElement) && !this.ui.modal()) {
       event.preventDefault(); this.search().nativeElement.focus();

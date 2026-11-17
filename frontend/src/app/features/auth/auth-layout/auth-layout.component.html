@@ -1,23 +1,8 @@
 <main class="auth-page">
   <section class="auth-story" aria-label="Bienvenue sur IsetForum">
-    <a class="auth-brand" routerLink="/connexion"><span class="auth-logo"><img src="assets/logo-iset.png" alt="Logo de l’ISET Radès" /></span><span>Iset<span>Forum</span><b>.</b></span></a>
-    <div class="auth-story-content">
-      <span class="institution-badge"><span></span>LE FORUM DE L’ISET RADÈS</span>
-      <h2>Un campus.<br>Mille idées.<br><span>Et vous, au milieu.</span></h2>
-      <p>Les questions d’aujourd’hui font les projets de demain. Retrouvez votre communauté et faites grandir ce que vous savez.</p>
-      <div class="auth-preview" aria-hidden="true">
-        <div class="preview-top"><span class="preview-dot"></span>LE CAMPUS EN CONVERSATION<app-icon name="spark" /></div>
-        <div class="preview-post"><span class="preview-cover code-cover"><app-icon name="code" /><b>&lt; apprendre /&gt;</b></span><span><small>#informatique</small><strong>Un projet à construire<br>ensemble ce week-end ?</strong><span class="preview-author"><i>YT</i>Youssef · Étudiant</span></span><app-icon name="heart" /></div>
-        <div class="preview-post"><span class="preview-cover book-cover"><app-icon name="book" /><b>LES BONS<br>DÉCLICS.</b></span><span><small>#ressources</small><strong>Les notes qui m’ont aidé.<br>À votre tour d’en profiter.</strong><span class="preview-author"><i>SM</i>Pr. Sami · Enseignant</span></span><app-icon name="bookmark" /></div>
-        <div class="preview-bottom"><span>Une idée peut tout changer.</span><span>↗</span></div>
-      </div>
-      <div class="auth-values"><span><app-icon name="users" />Trouvez votre cercle</span><span><app-icon name="book" />Partagez vos savoirs</span></div>
-    </div>
-    <div class="auth-story-footer"><span>Institut supérieur des études technologiques de Radès</span><span>Le savoir se partage.</span></div>
+    <a class="auth-brand" routerLink="/connexion"><span class="auth-logo"><img src="assets/logo-iset.png" alt="Logo de l’ISET Radès" /></span><span>Iset<span>Forum</span></span></a>
+    <div class="auth-story-content"><p class="institution-badge">LE FORUM DE L’ISET RADÈS</p><h2>Un campus.<br>Mille idées.<br><span>Une communauté.</span></h2><p>Posez vos questions, partagez vos ressources et construisez vos projets avec les étudiants et les enseignants de votre institut.</p><div class="auth-values"><span><app-icon name="users" />Échanger ensemble</span><span><app-icon name="book" />Partager les savoirs</span></div></div>
+    <p class="auth-story-footer">Institut supérieur des études technologiques de Radès</p>
   </section>
-  <section class="auth-form-side">
-    <div class="auth-top-note"><span>VOTRE PROCHAINE CONVERSATION COMMENCE ICI</span><button class="icon-button" (click)="theme.toggle()" [attr.aria-label]="theme.theme() === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'"><app-icon [name]="theme.theme() === 'dark' ? 'sun' : 'moon'" /></button></div>
-    <div class="auth-form-content"><ng-content /></div>
-    <footer><span>© 2026 IsetForum</span><span>Apprendre. Partager. Avancer.</span></footer>
-  </section>
+  <section class="auth-form-side"><div class="auth-top-note"><span>Bienvenue sur votre campus</span><button class="icon-button" (click)="theme.toggle()" [attr.aria-label]="theme.theme() === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'"><app-icon [name]="theme.theme() === 'dark' ? 'sun' : 'moon'" /></button></div><div class="auth-form-content"><ng-content /></div><footer>© 2026 IsetForum · Apprendre. Partager. Avancer.</footer></section>
 </main>

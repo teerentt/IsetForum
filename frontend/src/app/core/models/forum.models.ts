@@ -7,6 +7,7 @@ export interface Community {
 export interface Membership { userId: string; communityId: string; status: 'pending' | 'active'; }
 export interface Comment { id: string; author: string; initials: string; body: string; }
 export interface Publication {
+  authorId?: string;
   id: string; communityId: string; author: string; initials: string; role: Role;
   title: string; body: string; tags: string[]; createdAt: number;
   likes: number; likedBy: string[]; savedBy: string[]; comments: Comment[];
