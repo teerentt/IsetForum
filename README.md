@@ -24,6 +24,12 @@ IsetForum est un projet académique de forum : créer des communautés, échange
 
 Le projet conserve une architecture simple : un backend Spring Boot organisé en couches, un frontend Angular et une base MySQL gérée localement avec Laragon/phpMyAdmin.
 
+### Priorité actuelle : le backend
+
+Le développement se concentre actuellement sur les API Spring Boot, les règles métier et leur persistance dans MySQL. La structure en couches `controller`, `service`, `repository`, `model` et `dto` est conservée, avec des méthodes simples et des responsabilités claires.
+
+Le frontend Angular existe déjà, mais son interface nécessite encore des ajustements. Les prochaines évolutions visuelles et le raccordement des fonctionnalités de démonstration aux API seront repris plus tard. Les captures ci-dessous présentent donc une interface provisoire.
+
 ## Aperçu
 
 ![Accueil IsetForum — thème bleu et blanc](docs/images/forum-light.png)
@@ -37,7 +43,7 @@ Le projet conserve une architecture simple : un backend Spring Boot organisé en
 
   **Thème sombre**
 
-  ![Fil d’actualité en mode sombre](docs/images/forum-dark.png)
+  ![Fil d’actualité en mode sombre](frontend/forum-dark.png)
 
   **Version mobile**
 
@@ -57,7 +63,7 @@ Le projet conserve une architecture simple : un backend Spring Boot organisé en
 | Ressources texte téléchargeables | À implémenter | Démonstration `.txt` |
 | Pièces jointes et réinitialisation par e-mail | À implémenter | Non inclus |
 
-L’interface permet déjà de rechercher, filtrer, publier dans la démonstration, commenter et enregistrer des publications. Les données de démonstration restent dans le navigateur et sont séparées par compte. Les communautés réelles du backend ne sont pas encore affichées par Angular : ce raccordement est une prochaine étape.
+L’interface permet déjà de rechercher, filtrer, publier dans la démonstration, commenter et enregistrer des publications. Les données de démonstration restent dans le navigateur et sont séparées par compte. Les communautés réelles du backend ne sont pas encore affichées par Angular : ce raccordement sera traité lors de la reprise du frontend.
 
 ### Pages retenues
 
@@ -97,10 +103,10 @@ Le menu principal contient Accueil, Communautés et Mon profil. L’accueil util
 ### Prérequis
 
 - JDK 17 ou supérieur.
-- Node.js compatible avec Angular 21 : par exemple Node **22.19** utilisé sur ce projet.
 - MySQL 8 lancé avec Laragon.
-- npm et Git.
-- Angular CLI 21 pour utiliser directement `ng serve`.
+- Git.
+
+Pour lancer également le frontend : Node.js compatible avec Angular 21 (Node **22.19** utilisé sur ce projet), npm et Angular CLI 21. Ces outils ne sont pas nécessaires pour travailler uniquement sur le backend.
 
 ### 1. Récupérer le projet
 
@@ -127,8 +133,8 @@ La base est créée si elle est absente, puis les migrations Flyway créent les 
 
 ### 3. Lancer Spring Boot dans IntelliJ
 
-1. Ouvrez le projet à partir de `pom.xml` et chargez les dépendances Maven.
-2. Ouvrez `src/main/java/com/example/demo/DemoApplication.java`.
+1. Ouvrez `backend/pom.xml` dans IntelliJ et chargez les dépendances Maven.
+2. Ouvrez `backend/src/main/java/com/example/demo/DemoApplication.java`.
 3. Dans sa configuration d’exécution, renseignez les arguments de programme :
 
    ```text
@@ -139,19 +145,23 @@ La base est créée si elle est absente, puis les migrations Flyway créent les 
 
 Le profil `dev` crée les comptes et les communautés de développement uniquement s’ils sont absents. Il ne remplace pas les données existantes.
 
-Alternative en terminal Windows, depuis la racine :
+Alternative en terminal Windows, depuis la racine du dépôt :
 
 ```powershell
+cd backend
 .\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
 Sur Linux ou macOS :
 
 ```bash
+cd backend
 sh mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-### 4. Lancer Angular
+Dans VS Code, ouvrez la racine `IsetForum/`, puis importez le projet Maven `backend/pom.xml`. Si le tableau Spring Boot reste vide après le déplacement, exécutez **Java: Import Java Projects into Workspace** depuis la palette de commandes. Si nécessaire, utilisez **Java: Clean Java Language Server Workspace**, puis laissez l’import Java se terminer.
+
+### 4. Lancer Angular — facultatif pour le travail backend
 
 Depuis le dossier `frontend` :
 
@@ -203,29 +213,46 @@ Les inscriptions publiques créent uniquement des étudiants. Les comptes enseig
 
 ```text
 IsetForum/
-├── src/main/java/com/example/demo/
-│   ├── config/          Sécurité et données de développement
-│   ├── controller/      Points d’entrée HTTP par domaine
-│   ├── dto/             Requêtes et réponses API
-│   ├── enums/           Rôles, visibilité et statuts
-│   ├── exception/       Gestion commune des erreurs
-│   ├── model/           Entités utilisateur et communauté
-│   ├── repository/      Accès aux données JPA
-│   └── service/         Règles métier
-├── src/main/resources/
-│   └── db/migration/    Migrations Flyway
-├── src/test/            Tests backend
+├── backend/             Application Spring Boot
+│   ├── src/main/java/com/example/demo/
+│   │   ├── DemoApplication.java
+│   │   ├── config/      Sécurité et données de développement
+│   │   ├── controller/  Points d’entrée HTTP par domaine
+│   │   ├── dto/         Requêtes et réponses API
+│   │   ├── enums/       Rôles, visibilités et statuts
+│   │   ├── exception/   Gestion commune des erreurs
+│   │   ├── model/       Entités utilisateur et communauté
+│   │   ├── repository/  Accès aux données JPA
+│   │   └── service/     Règles métier
+│   ├── src/main/resources/
+│   │   ├── application.properties
+│   │   ├── application-dev.properties
+│   │   └── db/migration/ Migrations Flyway
+│   ├── src/test/        Tests backend
+│   ├── .mvn/           Configuration du Maven Wrapper
+│   ├── mvnw / mvnw.cmd
+│   └── pom.xml
 ├── frontend/            Application Angular
 │   ├── src/app/core/    Services, modèles et accès aux routes
 │   ├── src/app/layout/  Structure et navigation
 │   ├── src/app/features/Pages de l’application
 │   └── src/app/shared/  Composants réutilisables
 ├── docs/                API, architecture et captures
-├── scripts/             Vérification des parcours MySQL
-└── pom.xml
+└── scripts/             Vérification des parcours MySQL
 ```
 
-Parcours d’une requête : **Controller → Service → Repository → MySQL**. Les packages sont regroupés par domaine à l’intérieur de chaque couche. Aucun découpage en microservices ni infrastructure supplémentaire n’est nécessaire.
+Parcours d’une requête : **Controller → Service → Repository → MySQL**. Les packages sont regroupés par domaine à l’intérieur de chaque couche : `auth`, `user`, `community`, `membership` ou `admin`, selon leur responsabilité.
+
+| Couche | Responsabilité |
+| --- | --- |
+| `controller` | Recevoir les requêtes HTTP et renvoyer les réponses API |
+| `dto` | Définir les données d’entrée et de sortie |
+| `service` | Appliquer les règles métier et gérer les transactions |
+| `repository` | Accéder aux données avec Spring Data JPA |
+| `model` | Représenter les entités stockées dans MySQL |
+| `config` / `exception` | Configurer la sécurité et les données de développement, et centraliser les erreurs |
+
+Le `pom.xml`, le Maven Wrapper et les sources Java appartiennent à `backend/`. Les commandes Maven s’exécutent dans ce dossier ; `ng serve` et les commandes npm s’exécutent dans `frontend/`. Aucun découpage en microservices ni infrastructure supplémentaire n’est nécessaire.
 
 [Architecture détaillée](docs/architecture.md) · [API du Sprint 2](docs/sprint-2.md) · [Documentation Angular](frontend/README.md)
 
@@ -242,7 +269,7 @@ Les réponses sont en JSON. Les erreurs suivent `{ message, fields }`, avec des 
 
 ## Tests
 
-Depuis la racine :
+Depuis `backend` :
 
 ```powershell
 .\mvnw.cmd test
@@ -281,17 +308,27 @@ node scripts/verify-sprint2.mjs --read-only
 - **Les nouvelles communautés ne sont pas visibles dans Angular** : l’interface utilise encore sa démonstration locale. Les API réelles sont disponibles séparément.
 - **Erreur PowerShell sur `ng`** : utiliser Command Prompt ou `ng.cmd serve`.
 - **Cache Maven inaccessible** : dans Command Prompt, ajouter `"-Dmaven.repo.local=%USERPROFILE%\.m2\repository"` à la commande Maven.
-- **Packages backend déplacés dans IntelliJ** : recharger le projet Maven et relancer `DemoApplication`.
+- **Classe `DemoApplication` introuvable après déplacement** : importer `backend/pom.xml`, recharger le projet Maven et relancer `com.example.demo.DemoApplication`.
+- **Tableau Spring Boot vide dans VS Code** : réimporter les projets Java ; si nécessaire, nettoyer l’espace de travail du serveur Java et redémarrer VS Code.
 
 ## Feuille de route
 
+### Backend — travail en cours et prochaines étapes
+
 - [x] Authentification et inscription avec MySQL.
 - [x] Communautés et adhésions côté backend.
-- [x] Interface française, identité ISET et thèmes sombre/clair.
-- [ ] Relier les communautés Angular aux API réelles.
 - [ ] Ajouter les publications et commentaires au backend.
 - [ ] Ajouter les pièces jointes et ressources partagées.
 - [ ] Finaliser la modération et les notifications.
+
+Chaque nouvelle fonctionnalité doit conserver les couches existantes, vérifier les droits d’accès côté serveur et être testée avant son raccordement à Angular.
+
+### Frontend — à reprendre plus tard
+
+- [x] Première interface française avec l’identité ISET et les thèmes clair/sombre.
+- [ ] Poursuivre les ajustements du design et de la navigation.
+- [ ] Relier les communautés et adhésions Angular aux API réelles.
+- [ ] Remplacer progressivement les publications, commentaires et ressources de démonstration par les données du backend.
 
 ## Contribuer
 

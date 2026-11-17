@@ -113,10 +113,11 @@ Une absence d’adhésion renvoie `404` ; un doublon ou une tentative de quitter
 Tests automatiques, sur une base H2 isolée :
 
 ```cmd
-mvnw.cmd test
+cd backend
+.\mvnw.cmd test
 ```
 
-Le fichier `src/test/java/com/example/demo/community/CommunityTest.java` vérifie notamment les permissions, le parcours public et privé, les doublons, les validations françaises, les changements de visibilité et la conservation de l’adhésion du créateur. Le classement des packages est décrit dans [l’architecture](architecture.md).
+Le fichier `backend/src/test/java/com/example/demo/community/CommunityTest.java` vérifie notamment les permissions, le parcours public et privé, les doublons, les validations françaises, les changements de visibilité et la conservation de l’adhésion du créateur. Le classement des packages est décrit dans [l’architecture](architecture.md).
 
 Pour vérifier réellement les API et MySQL, démarrez le backend avec le profil `dev`, puis, depuis la racine du projet :
 

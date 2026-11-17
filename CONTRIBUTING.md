@@ -18,8 +18,9 @@ Suivez les étapes du [README](README.md). Gardez les paramètres de connexion l
 ## Vérifier une modification
 
 ```cmd
-mvnw.cmd test
-cd frontend
+cd backend
+.\mvnw.cmd test
+cd ../frontend
 npm test
 npm run build
 ```

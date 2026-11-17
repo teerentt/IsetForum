@@ -1,11 +1,11 @@
 # Organisation du projet
 
-IsetForum est un monolithe Spring Boot avec un frontend Angular séparé. Le backend reste à la racine pour conserver son ouverture et son lancement dans IntelliJ. Le déplacement des packages ne change ni les routes HTTP ni le schéma MySQL.
+IsetForum est un monolithe Spring Boot avec un frontend Angular séparé. Le dossier `backend/` contient le projet Maven complet : `pom.xml`, `mvnw`, `mvnw.cmd`, `.mvn/` et `src/`. Le dossier `frontend/` contient uniquement le projet Angular. Ouvrez `backend/pom.xml` dans IntelliJ, ou la racine du dépôt dans VS Code.
 
 ## Backend
 
 ```text
-src/main/java/com/example/demo/
+backend/src/main/java/com/example/demo/
 ├── DemoApplication.java
 ├── config/
 │   ├── security/         Configuration Spring Security
@@ -41,7 +41,7 @@ Une requête suit le parcours `controller → service → repository → MySQL`.
 - Les entités représentent les tables ; les DTO limitent les champs exposés.
 - La configuration de sécurité gère les sessions, les rôles et la protection CSRF.
 
-Les migrations Flyway restent dans `src/main/resources/db/migration`. Une migration déjà exécutée n’est pas modifiée. Les tests sont classés dans `src/test/java/com/example/demo/auth` et `community` et utilisent une base H2 isolée.
+Les migrations Flyway restent dans `backend/src/main/resources/db/migration`. Une migration déjà exécutée n’est pas modifiée. Les tests sont classés dans `backend/src/test/java/com/example/demo/auth` et `community` et utilisent une base H2 isolée.
 
 ## Frontend
 

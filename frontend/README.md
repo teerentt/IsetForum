@@ -1,6 +1,6 @@
 ﻿# IsetForum — frontend Angular
 
-Interface française pour l’Institut supérieur des études technologiques de Radès, inspirée de la maquette fournie : thème sombre par défaut, mode clair bleu/blanc et logo ISET Radès.
+Interface française pour l’Institut supérieur des études technologiques de Radès : fil inspiré de Reddit, thème bleu et blanc par défaut, mode sombre au choix et logo ISET Radès. Le projet Spring Boot se trouve dans le dossier voisin `../backend/`.
 
 ## Démarrer
 
@@ -23,9 +23,9 @@ Le proxy de développement transfère `/api/**` vers `http://127.0.0.1:8080`. Sp
 - `core/services/theme.service.ts` : thème sombre/clair, conservé après actualisation.
 - `core/guards/` et `core/interceptors/` : accès aux routes et expiration des sessions.
 - `core/demo/` : contenu fictif du forum, séparé des vrais comptes.
-- `layout/` : en-tête, navigation latérale, découvertes et structure du forum.
+- `layout/` : en-tête, navigation latérale et structure du forum.
 - `features/auth/` : connexion et inscription, avec une mise en page commune.
-- `features/feed/`, `communities/`, `resources/`, `saved/`, `admin/`, `publications/` : fonctionnalités du forum.
+- `features/feed/`, `communities/`, `profile/`, `admin/`, `publications/` : fonctionnalités du forum. Les ressources sont dans chaque communauté, les favoris dans le profil.
 - `shared/components/` : icônes, cartes, notifications et dialogues réutilisables.
 - `shared/styles/` : styles communs du contenu des dialogues.
 
@@ -39,11 +39,11 @@ Connexion, inscription étudiante, lecture du compte courant, rôles et déconne
 
 ## Ce qui reste une démonstration
 
-Le backend du Sprint 2 propose des API réelles pour les communautés et les adhésions, mais cette interface Angular ne les appelle pas encore. Communautés, adhésions, publications, commentaires, ressources texte, favoris, likes et événements restent donc fictifs dans l’interface. Les modifications du forum sont isolées par compte dans le navigateur (`isetforum-demo-v2-account-<id>`), avec un espace séparé pour les visiteurs. Elles ne sont pas synchronisées entre utilisateurs. La liste de validation des administrateurs contient des demandes fictives, indépendantes des demandes MySQL.
+Le backend du Sprint 2 propose des API réelles pour les communautés et les adhésions, mais cette interface Angular ne les appelle pas encore. Communautés, adhésions, publications, commentaires, ressources texte, favoris et likes restent donc fictifs dans l’interface. Les modifications du forum sont isolées par compte dans le navigateur (`isetforum-demo-v2-account-<id>`), avec un espace séparé pour les visiteurs. Elles ne sont pas synchronisées entre utilisateurs. La liste de validation des administrateurs contient des demandes fictives, indépendantes des demandes MySQL.
 
 Les noms et descriptions des communautés privées sont publics ; leur contenu est masqué aux non-membres dans la démonstration. Pour de vraies données privées, ces règles devront être appliquées côté serveur avant de connecter les API du forum.
 
-Les ressources actuelles sont des notes téléchargeables au format `.txt`. Les événements du calendrier sont fictifs. L’envoi de fichiers et la réinitialisation du mot de passe par e-mail restent à implémenter.
+Les ressources actuelles sont des notes téléchargeables au format `.txt`. L’envoi de fichiers et la réinitialisation du mot de passe par e-mail restent à implémenter.
 
 ## Vérifier
 
