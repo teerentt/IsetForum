@@ -36,7 +36,7 @@ Les services utilisent des méthodes courtes, des boucles et des conditions `if`
 - En passant une communauté en public, les demandes en attente deviennent actives : la validation n’est plus nécessaire. En passant en privé, les membres actifs restent membres.
 - La liste des membres actifs est publique pour une communauté publique. Pour une communauté privée, elle est réservée aux membres actifs et aux administrateurs. Une demande en attente ne donne aucun accès.
 
-Les publications et ressources privées n’existent pas encore dans le backend. Leur accès devra respecter les adhésions lors de leur ajout.
+À la fin du sprint 2, les publications et ressources privées n’existaient pas encore dans le backend. Le [sprint 3](sprint-3.md) ajoute depuis les publications et commentaires avec les contrôles d’adhésion ; les ressources pédagogiques restent à ajouter.
 
 ## Routes
 

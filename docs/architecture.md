@@ -64,4 +64,6 @@ Chaque composant conserve ses fichiers TypeScript, HTML et CSS. Les couleurs com
 
 Le thème initial est bleu et blanc. La navigation se limite à Accueil, Communautés et Mon profil, avec Administration selon le rôle. Les ressources sont un onglet de la communauté ; les favoris sont un onglet du profil. Chaque publication possède une route `/forum/publications/:id`, utilisable directement ou après actualisation. Les fenêtres de dialogue servent uniquement à créer une publication ou une communauté.
 
-Les comptes sont réellement connectés au backend. Le forum Angular utilise encore des données de démonstration ; les services de démonstration sont identifiés explicitement. Les API réelles des communautés et adhésions pourront être raccordées sans modifier les composants de présentation.
+Les comptes et la page `/forum/administration` sont réellement connectés au backend. `AdminService` utilise `/api/admin/communities` et `/api/admin/membership-requests`. Les écrans utilisateur du forum restent en démonstration locale ; leurs données ne sont pas mélangées avec celles de l’administration.
+
+Le sprint 3 ajoute le domaine `publication` aux couches `model`, `repository`, `dto`, `service` et `controller`. `CommunityAccessService` centralise les contrôles simples de lecture, d’adhésion active, d’auteur et d’administrateur. La migration V3 ajoute `publication` et `publication_comment`. Les suppressions des enfants puis des parents sont explicites et transactionnelles. Voir [Sprint 3](sprint-3.md).

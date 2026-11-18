@@ -37,11 +37,13 @@ Le logo utilisé par l’application est servi depuis `public/assets/logo-iset.p
 
 Connexion, inscription étudiante, lecture du compte courant, rôles et déconnexion utilisent réellement Spring Boot et MySQL. L’authentification repose sur une session HttpOnly et la protection CSRF. Aucun jeton ni mot de passe n’est conservé dans localStorage. La création d’un compte enseignant ou administrateur n’est pas proposée à l’inscription.
 
+Depuis le sprint 3, `/forum/administration` utilise aussi les API réelles. Son onglet Communautés permet de créer, consulter, modifier et supprimer ; son onglet Demandes d’adhésion permet d’approuver ou refuser les demandes MySQL. `AdminService` et `admin.models.ts` contiennent les appels HTTP et leurs contrats. La suppression demande confirmation et retire les adhésions, publications et commentaires associés, en conservant les utilisateurs. Le rôle est contrôlé par le garde Angular et par le serveur.
+
 ## Ce qui reste une démonstration
 
-Le backend du Sprint 2 propose des API réelles pour les communautés et les adhésions, mais cette interface Angular ne les appelle pas encore. Communautés, adhésions, publications, commentaires, ressources texte, favoris et likes restent donc fictifs dans l’interface. Les modifications du forum sont isolées par compte dans le navigateur (`isetforum-demo-v2-account-<id>`), avec un espace séparé pour les visiteurs. Elles ne sont pas synchronisées entre utilisateurs. La liste de validation des administrateurs contient des demandes fictives, indépendantes des demandes MySQL.
+En dehors de l’administration et de l’authentification, les écrans Angular utilisent encore les communautés, adhésions, publications, commentaires, ressources texte, favoris et likes fictifs. Les modifications de démonstration sont isolées par compte dans le navigateur (`isetforum-demo-v2-account-<id>`), avec un espace séparé pour les visiteurs. Elles ne sont pas synchronisées entre utilisateurs. Les communautés et demandes de démonstration n’alimentent pas l’administration réelle.
 
-Les noms et descriptions des communautés privées sont publics ; leur contenu est masqué aux non-membres dans la démonstration. Pour de vraies données privées, ces règles devront être appliquées côté serveur avant de connecter les API du forum.
+Les noms et descriptions des communautés privées sont publics ; leur contenu est masqué aux non-membres dans la démonstration. Les API de publications et commentaires du sprint 3 appliquent déjà ces droits côté serveur ; le raccordement des écrans utilisateur reste à faire.
 
 Les ressources actuelles sont des notes téléchargeables au format `.txt`. L’envoi de fichiers et la réinitialisation du mot de passe par e-mail restent à implémenter.
 

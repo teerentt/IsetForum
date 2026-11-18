@@ -28,7 +28,7 @@ Le projet conserve une architecture simple : un backend Spring Boot organisé en
 
 Le développement se concentre actuellement sur les API Spring Boot, les règles métier et leur persistance dans MySQL. La structure en couches `controller`, `service`, `repository`, `model` et `dto` est conservée, avec des méthodes simples et des responsabilités claires.
 
-Le frontend Angular existe déjà, mais son interface nécessite encore des ajustements. Les prochaines évolutions visuelles et le raccordement des fonctionnalités de démonstration aux API seront repris plus tard. Les captures ci-dessous présentent donc une interface provisoire.
+Le sprint 3 ajoute les API de publications et commentaires ainsi qu’une administration Angular connectée à MySQL : CRUD des communautés et traitement des demandes d’adhésion. Le reste du forum Angular conserve ses données de démonstration ; son raccordement et les évolutions visuelles seront repris plus tard. Les captures ci-dessous présentent une interface provisoire.
 
 ## Aperçu
 
@@ -56,14 +56,15 @@ Le frontend Angular existe déjà, mais son interface nécessite encore des ajus
 | --- | --- | --- |
 | Inscription étudiante, connexion, déconnexion | Opérationnel | Connecté aux API |
 | Session et restauration du compte | Opérationnel | Connecté aux API |
-| Communautés publiques et privées | Opérationnel | Démonstration locale |
-| Adhésions et demandes privées | Opérationnel | Démonstration locale |
-| Validation par l’administrateur | Opérationnel | Démonstration locale |
-| Publications, commentaires, likes et favoris | À implémenter | Démonstration locale |
+| Communautés publiques et privées | Opérationnel, suppression administrateur incluse | CRUD administrateur connecté ; espace utilisateur en démonstration |
+| Adhésions et demandes privées | Opérationnel | Espace utilisateur en démonstration |
+| Validation par l’administrateur | Opérationnel | Connectée aux API |
+| Publications et commentaires | Opérationnel | Écrans utilisateur en démonstration |
+| Likes et favoris | À implémenter | Démonstration locale |
 | Ressources texte téléchargeables | À implémenter | Démonstration `.txt` |
 | Pièces jointes et réinitialisation par e-mail | À implémenter | Non inclus |
 
-L’interface permet déjà de rechercher, filtrer, publier dans la démonstration, commenter et enregistrer des publications. Les données de démonstration restent dans le navigateur et sont séparées par compte. Les communautés réelles du backend ne sont pas encore affichées par Angular : ce raccordement sera traité lors de la reprise du frontend.
+La page `/forum/administration`, réservée au rôle `ADMIN`, affiche les communautés et les demandes réelles du backend. Les autres pages permettent encore de rechercher, publier, commenter et enregistrer dans une démonstration locale séparée par compte. Une communauté créée dans l’administration n’apparaît donc pas dans l’annuaire utilisateur de démonstration.
 
 ### Pages retenues
 
@@ -73,7 +74,7 @@ L’interface permet déjà de rechercher, filtrer, publier dans la démonstrati
 - **Une communauté** : présentation, adhésion et onglets Publications / Ressources.
 - **Une publication** : lecture complète et commentaires, avec une adresse dédiée.
 - **Mon profil** : informations du compte, publications personnelles et favoris.
-- **Administration** : validation des demandes privées, réservée aux administrateurs.
+- **Administration** : CRUD réel des communautés et validation des demandes privées, réservés aux administrateurs.
 
 Le menu principal contient Accueil, Communautés et Mon profil. L’accueil utilise deux colonnes, sans panneau de suggestions à droite. Les textes courants sont en 16 px, les titres de discussion en 20–22 px et les métadonnées en 14 px. Les anciennes adresses `/forum/favoris` et `/forum/ressources` restent accessibles et mènent aux espaces correspondants.
 
@@ -254,7 +255,7 @@ Parcours d’une requête : **Controller → Service → Repository → MySQL**.
 
 Le `pom.xml`, le Maven Wrapper et les sources Java appartiennent à `backend/`. Les commandes Maven s’exécutent dans ce dossier ; `ng serve` et les commandes npm s’exécutent dans `frontend/`. Aucun découpage en microservices ni infrastructure supplémentaire n’est nécessaire.
 
-[Architecture détaillée](docs/architecture.md) · [API du Sprint 2](docs/sprint-2.md) · [Documentation Angular](frontend/README.md)
+[Architecture détaillée](docs/architecture.md) · [API du Sprint 2](docs/sprint-2.md) · [Sprint 3 : API et administration](docs/sprint-3.md) · [Documentation Angular](frontend/README.md)
 
 ## API
 
@@ -263,7 +264,9 @@ Le `pom.xml`, le Maven Wrapper et les sources Java appartiennent à `backend/`. 
 | Authentification | `/api/auth/register`, `/api/auth/login`, `/api/auth/me`, `/api/auth/logout`, `/api/auth/csrf` |
 | Communautés | `/api/communities`, `/api/communities/{id}` |
 | Adhésions | `/api/communities/{id}/membership`, `/api/memberships/mine` |
-| Administration | `/api/admin/membership-requests` |
+| Publications | `/api/communities/{id}/publications`, `/api/publications/{id}` |
+| Commentaires | `/api/publications/{id}/comments`, `/api/comments/{id}` |
+| Administration | `/api/admin/communities`, `/api/admin/membership-requests` |
 
 Les réponses sont en JSON. Les erreurs suivent `{ message, fields }`, avec des messages français. Les mots de passe et leurs hachages ne sont jamais exposés. L’authentification utilise une session `JSESSIONID` HttpOnly et SameSite=Lax. Les requêtes d’écriture nécessitent le jeton CSRF géré par Angular.
 
@@ -290,6 +293,18 @@ npm run test:browser
 
 Les tests Java utilisent H2, sans modifier MySQL. Les tests navigateur couvrent la connexion, l’inscription, les trois rôles, les sessions, les interactions du forum, le logo, les thèmes et les vues mobiles. Ils créent un compte étudiant de vérification dans MySQL et des captures dans `frontend/artifacts/`, ignoré par Git.
 
+Le sprint 3 porte la suite Java à 39 tests, dont les permissions des publications/commentaires et l’annulation transactionnelle d’une suppression échouée. Les tests navigateur vérifient aussi le CRUD administrateur et les décisions sur de vraies demandes d’adhésion. Les tests H2 désactivent Flyway : une vérification MySQL séparée reste nécessaire.
+
+Pour créer des contenus de vérification du sprint 3, puis contrôler leur persistance après redémarrage :
+
+```bash
+node scripts/verify-sprint3.mjs
+# Redémarrer Spring Boot, puis :
+node scripts/verify-sprint3.mjs --read-only
+```
+
+Le script conserve deux communautés de test et leurs contenus. Les identifiants sont enregistrés dans `backend/target/sprint3-verification.json`. `ISETFORUM_API_URL` permet de choisir un serveur de test différent.
+
 Pour vérifier les API du Sprint 2 sur MySQL, depuis la racine :
 
 ```bash
@@ -305,7 +320,7 @@ node scripts/verify-sprint2.mjs --read-only
 ## Dépannage rapide
 
 - **Connexion impossible** : vérifier que MySQL est démarré et que Spring Boot écoute sur `8080`.
-- **Les nouvelles communautés ne sont pas visibles dans Angular** : l’interface utilise encore sa démonstration locale. Les API réelles sont disponibles séparément.
+- **Les communautés de l’administration ne sont pas visibles dans l’annuaire utilisateur** : seul l’écran administrateur est connecté ; l’annuaire et le fil utilisent encore leurs données locales de démonstration.
 - **Erreur PowerShell sur `ng`** : utiliser Command Prompt ou `ng.cmd serve`.
 - **Cache Maven inaccessible** : dans Command Prompt, ajouter `"-Dmaven.repo.local=%USERPROFILE%\.m2\repository"` à la commande Maven.
 - **Classe `DemoApplication` introuvable après déplacement** : importer `backend/pom.xml`, recharger le projet Maven et relancer `com.example.demo.DemoApplication`.
@@ -317,7 +332,8 @@ node scripts/verify-sprint2.mjs --read-only
 
 - [x] Authentification et inscription avec MySQL.
 - [x] Communautés et adhésions côté backend.
-- [ ] Ajouter les publications et commentaires au backend.
+- [x] Ajouter les publications et commentaires au backend.
+- [x] Connecter le CRUD des communautés et les demandes d’adhésion dans l’administration Angular.
 - [ ] Ajouter les pièces jointes et ressources partagées.
 - [ ] Finaliser la modération et les notifications.
 
@@ -327,7 +343,7 @@ Chaque nouvelle fonctionnalité doit conserver les couches existantes, vérifier
 
 - [x] Première interface française avec l’identité ISET et les thèmes clair/sombre.
 - [ ] Poursuivre les ajustements du design et de la navigation.
-- [ ] Relier les communautés et adhésions Angular aux API réelles.
+- [ ] Relier les écrans utilisateur des communautés et adhésions Angular aux API réelles.
 - [ ] Remplacer progressivement les publications, commentaires et ressources de démonstration par les données du backend.
 
 ## Contribuer
