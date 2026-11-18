@@ -99,3 +99,9 @@ Le premier passage crée deux communautés de vérification et conserve leurs co
 Créer une communauté privée depuis l’administration ; demander l’adhésion via l’API étudiante ; approuver dans Angular ; créer une publication et un commentaire via les API du membre ; constater les refus d’un visiteur et d’un membre en attente ; vérifier les données après redémarrage ; modifier et supprimer la communauté depuis l’administration.
 
 Reportés : raccordement des écrans utilisateur, likes, favoris, ressources et fichiers, notifications, signalements, gestion des comptes et refonte graphique.
+
+## Nettoyage après validation
+
+Les trois bases MySQL isolées `isetforum_sprint3_20261118072854`, `isetforum_sprint3_20261118072918` et `isetforum_sprint3_fresh_20261118073257` ont été supprimées après validation et à la demande de l’utilisateur. La première était vide ; les deux autres contenaient uniquement les données de vérification et les comptes de développement. La base principale `isetforum` a été conservée, avec les mêmes nombres d’utilisateurs, de communautés et d’adhésions avant et après nettoyage.
+
+Les rapports locaux associés à ces bases sont des artefacts de test. Pour une nouvelle vérification de persistance, créer de nouveaux contenus avec le script avant d’utiliser `--read-only`, en gardant le même serveur et la même base entre les deux passages.

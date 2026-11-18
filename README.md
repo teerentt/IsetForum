@@ -30,6 +30,8 @@ Le développement se concentre actuellement sur les API Spring Boot, les règles
 
 Le sprint 3 ajoute les API de publications et commentaires ainsi qu’une administration Angular connectée à MySQL : CRUD des communautés et traitement des demandes d’adhésion. Le reste du forum Angular conserve ses données de démonstration ; son raccordement et les évolutions visuelles seront repris plus tard. Les captures ci-dessous présentent une interface provisoire.
 
+Le périmètre du **sprint 3 est terminé**, mais l’application complète reste en développement : ressources et pièces jointes, likes/favoris côté serveur, signalements/notifications et intégration des écrans utilisateur sont encore à réaliser.
+
 ## Aperçu
 
 ![Accueil IsetForum — thème bleu et blanc](docs/images/forum-light.png)
@@ -304,6 +306,8 @@ node scripts/verify-sprint3.mjs --read-only
 ```
 
 Le script conserve deux communautés de test et leurs contenus. Les identifiants sont enregistrés dans `backend/target/sprint3-verification.json`. `ISETFORUM_API_URL` permet de choisir un serveur de test différent.
+
+Les bases `isetforum_sprint3_*` utilisées pour les vérifications isolées sont temporaires et ne sont pas nécessaires au fonctionnement de l’application. Elles ont été supprimées après validation du sprint ; la base principale `isetForum` (affichée `isetforum` dans MySQL) est conservée. Après suppression d’une base de test, relancer le script sans `--read-only` sur un backend de test configuré pour une nouvelle vérification avant de contrôler la persistance.
 
 Pour vérifier les API du Sprint 2 sur MySQL, depuis la racine :
 
