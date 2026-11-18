@@ -3,6 +3,7 @@ import { createServer, request as upstreamRequest } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { chromium } from 'playwright';
+import { checkAdmin } from './admin-browser-check.mjs';
 
 // This suite requires the dev backend and exercises actual database accounts.
 const root = resolve('dist/isetforum/browser');
@@ -151,12 +152,13 @@ try {
   await login('professeur@isetforum.test');
   assert.equal((await page.request.get(url + '/api/auth/me').then(r => r.json())).role, 'PROFESSOR');
   assert.equal(await page.locator('.main-nav').getByRole('button', { name: 'Administration', exact: true }).count(), 0);
+  await page.goto(url + '/forum/administration');
+  await page.getByRole('heading', { name: 'Accueil', exact: true }).waitFor();
   await page.getByRole('button', { name: 'Se déconnecter', exact: true }).click();
   await page.getByRole('heading', { name: /Heureux de vous/ }).waitFor();
   await login('admin@isetforum.test');
   await page.locator('.main-nav').getByRole('button', { name: 'Administration', exact: true }).click();
-  await page.getByRole('button', { name: 'Approuver', exact: true }).click();
-  await page.getByRole('heading', { name: 'Tout est à jour.' }).waitFor();
+  await checkAdmin(page, browser, url);
   await page.getByRole('button', { name: 'Se déconnecter', exact: true }).click();
   await page.getByRole('heading', { name: /Heureux de vous/ }).waitFor();
 

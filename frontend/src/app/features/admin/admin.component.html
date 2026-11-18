@@ -1,3 +1,34 @@
-<div class="page-heading"><div><p class="eyebrow accent-text">ADMINISTRATION · DÉMONSTRATION</p><h1>Demandes d’adhésion<span class="accent-text">.</span></h1><p>Une validation, une nouvelle rencontre.</p></div><span class="community-icon blue"><app-icon name="shield" /></span></div>
-<div class="info-banner"><app-icon name="shield" /><p>Seuls les administrateurs approuvent les demandes privées. Cette liste utilise des données de démonstration locales.</p></div>
-@for (request of forum.requests(); track request.communityId + request.userId) { <article class="request-card panel"><span class="avatar">{{ request.userId.slice(0,2).toUpperCase() }}</span><div><h3>{{ ui.personName(request.userId) }}</h3><p>Souhaite rejoindre <strong>{{ forum.community(request.communityId)?.name }}</strong></p><span class="status-label">En attente de validation</span></div><div class="request-actions"><button class="secondary-button" (click)="ui.review(request.userId,request.communityId,false)">Refuser</button><button class="primary-button" (click)="ui.review(request.userId,request.communityId,true)"><app-icon name="check" />Approuver</button></div></article> } @empty { <div class="empty-state panel"><span class="community-icon blue"><app-icon name="check" /></span><h2>Tout est à jour.</h2><p>Aucune demande n’attend votre validation.</p></div> }
+<div class="page-heading"><div><h1>Administration</h1><p>Gestion des communautés et des demandes d’adhésion.</p></div></div>
+<div class="tabs" aria-label="Administration">
+  <button [class.active]="tab() === 'communities'" [attr.aria-pressed]="tab() === 'communities'" (click)="tab.set('communities')">Communautés</button>
+  <button [class.active]="tab() === 'requests'" [attr.aria-pressed]="tab() === 'requests'" (click)="tab.set('requests')">Demandes d’adhésion ({{ requests().length }})</button>
+</div>
+@if (error()) { <div class="admin-error" role="alert"><p>{{ error() }}</p><button class="text-link" [disabled]="busy() || loading()" (click)="load()">Actualiser les données</button></div> }
+@if (message()) { <p class="admin-message" role="status">{{ message() }}</p> }
+@if (loading()) { <p class="loading" role="status">Chargement des données…</p> }
+@else if (tab() === 'communities') {
+  <div class="admin-toolbar"><h2>Communautés</h2><button class="primary-button" [disabled]="busy()" (click)="create()">Créer une communauté</button></div>
+  @if (editing()) {
+    <form class="admin-form panel" (ngSubmit)="save()" #form="ngForm">
+      <h2>{{ editId === null ? 'Nouvelle communauté' : 'Modifier la communauté' }}</h2>
+      <label for="community-name">Nom de la communauté</label><input id="community-name" name="name" [(ngModel)]="input.name" required maxlength="100" />
+      <label for="community-description">Description</label><textarea id="community-description" name="description" [(ngModel)]="input.description" required maxlength="1000" rows="4"></textarea>
+      <label for="community-visibility">Visibilité</label><select id="community-visibility" name="visibility" [(ngModel)]="input.visibility"><option value="PUBLIC">Publique</option><option value="PRIVATE">Privée</option></select>
+      <p class="form-note">Passer une communauté en public accepte ses demandes en attente. Passer en privé conserve ses membres actifs.</p>
+      <div class="admin-actions"><button class="secondary-button" type="button" [disabled]="busy()" (click)="editing.set(false); selected.set(null)">Annuler</button><button class="primary-button" type="submit" [disabled]="busy() || form.invalid || !input.name.trim() || !input.description.trim()">{{ busy() ? 'Enregistrement…' : 'Enregistrer' }}</button></div>
+    </form>
+  } @else if (selected(); as community) {
+    <section class="admin-detail panel"><h2>{{ community.name }}</h2><p>{{ community.description }}</p><p>{{ community.visibility === 'PUBLIC' ? 'Publique' : 'Privée' }} · {{ community.memberCount }} membres</p><p>Créée par {{ community.creatorName }} le {{ community.createdAt | date:'dd/MM/yyyy' }}</p><button class="secondary-button" (click)="selected.set(null)">Fermer le détail</button></section>
+  }
+  @if (deleting(); as community) {
+    <section class="delete-confirmation panel" aria-labelledby="delete-title"><h2 id="delete-title">Supprimer « {{ community.name }} » ?</h2><p>Cette action est définitive. Toutes ses adhésions, demandes, publications et tous ses commentaires seront supprimés. Les comptes utilisateurs seront conservés.</p><div class="admin-actions"><button class="secondary-button" [disabled]="busy()" (click)="deleting.set(null)">Annuler</button><button class="danger-button" [disabled]="busy()" (click)="remove()">Confirmer la suppression</button></div></section>
+  }
+  @for (community of communities(); track community.id) {
+    <article class="community-admin-card panel"><div><h3>{{ community.name }}</h3><p>{{ community.visibility === 'PUBLIC' ? 'Publique' : 'Privée' }} · {{ community.memberCount }} membres</p></div><div class="admin-actions"><button class="secondary-button" [disabled]="busy()" (click)="view(community)">Consulter</button><button class="secondary-button" [disabled]="busy()" (click)="view(community, true)">Modifier</button><button class="danger-button" [disabled]="busy()" (click)="confirmDelete(community)">Supprimer</button></div></article>
+  } @empty { <div class="empty-state panel"><h2>Aucune communauté</h2><p>Créez la première communauté.</p></div> }
+} @else {
+  <div class="admin-toolbar"><h2>Demandes d’adhésion</h2><button class="secondary-button" [disabled]="busy()" (click)="load()">Actualiser</button></div>
+  @for (request of requests(); track request.id) {
+    <article class="request-card panel"><div><h3>{{ request.userName }}</h3><p>Souhaite rejoindre <strong>{{ request.communityName }}</strong></p><span class="status-label">En attente de validation</span></div><div class="request-actions"><button class="secondary-button" [disabled]="busy()" (click)="review(request, false)">Refuser</button><button class="primary-button" [disabled]="busy()" (click)="review(request, true)">Approuver</button></div></article>
+  } @empty { <div class="empty-state panel"><h2>Tout est à jour.</h2><p>Aucune demande n’attend votre validation.</p></div> }
+}
