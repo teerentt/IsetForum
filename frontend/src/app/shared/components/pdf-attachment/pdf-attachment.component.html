@@ -1,0 +1,9 @@
+<section class="pdf-box" aria-label="Pièce jointe PDF">
+  <div><strong>Document PDF</strong><span class="muted">Un fichier par contenu · 5 Mo maximum</span></div>
+  @if (loading()) { <p role="status">Chargement du document…</p> }
+  @else if (pdf(); as file) { <div class="pdf-actions"><a class="text-link" [href]="'/api/' + kind() + '/' + contentId() + '/pdf'">{{ file.filename }} ↓</a><span class="muted">{{ (file.size / 1024).toFixed(0) }} Ko</span>@if (writable()) { <button class="text-link danger" [disabled]="busy()" (click)="remove()">Supprimer le PDF</button> }</div> }
+  @else if (!error()) { <p class="muted">Aucun PDF joint.</p> }
+  @if (writable()) { <label class="upload-label">{{ pdf() ? 'Remplacer le PDF' : 'Joindre un PDF' }}<input type="file" accept=".pdf,application/pdf" [disabled]="busy()" (change)="upload($event)" /></label> }
+  @if (busy()) { <p role="status">Traitement du PDF…</p> }
+  @if (error()) { <p class="form-error" role="alert">{{ error() }}</p> }
+</section>

@@ -1,12 +1,12 @@
 <app-auth-layout>
-  <p class="auth-kicker">LES GRANDES IDÉES COMMENCENT ENSEMBLE.</p><h1>Votre place<br>est ici<span>.</span></h1><p class="auth-intro">Rejoignez la communauté étudiante de l’ISET Radès.</p>
+  <p class="auth-kicker">LES GRANDES IDÉES COMMENCENT ENSEMBLE.</p><h1>Votre place<br>est ici<span>.</span></h1><p class="auth-intro">Étudiants et enseignants : inscrivez-vous avec l’adresse autorisée par votre établissement.</p>
   <form (ngSubmit)="submit()" #form="ngForm">
     <label for="name">Nom complet</label><div class="auth-input"><app-icon name="users" /><input id="name" name="name" [(ngModel)]="name" required maxlength="100" autocomplete="name" placeholder="Votre prénom et votre nom" /></div>
     <label for="email">Adresse e-mail</label><div class="auth-input"><app-icon name="mail" /><input id="email" name="email" type="email" [(ngModel)]="email" required email maxlength="254" autocomplete="username" placeholder="prenom.nom@exemple.tn" /></div>
     <label for="password">Mot de passe <small>8 caractères minimum</small></label><div class="auth-input"><app-icon name="lock" /><input id="password" name="password" [type]="showPassword() ? 'text' : 'password'" [(ngModel)]="password" required minlength="8" maxlength="72" autocomplete="new-password" placeholder="Créez votre mot de passe" /><button type="button" [attr.aria-label]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'" (click)="showPassword.set(!showPassword())"><app-icon [name]="showPassword() ? 'eye-off' : 'eye'" /></button></div>
     <label for="confirmation">Confirmer le mot de passe</label><div class="auth-input"><app-icon name="lock" /><input id="confirmation" name="confirmation" type="password" [(ngModel)]="confirmation" required maxlength="72" autocomplete="new-password" placeholder="Encore une fois, pour être sûr" /></div>
     @if (error()) { <p class="auth-error" role="alert">{{ error() }}</p> }
-    <button class="auth-submit" type="submit" [disabled]="form.invalid || busy() || !name.trim()"><span>{{ busy() ? 'Création en cours…' : 'Créer mon compte étudiant' }}</span><app-icon name="arrow" /></button>
+    <button class="auth-submit" type="submit" [disabled]="form.invalid || busy() || !name.trim()"><span>{{ busy() ? 'Création en cours…' : 'Créer mon compte' }}</span><app-icon name="arrow" /></button>
   </form>
-  <p class="auth-switch">Déjà membre ? <a routerLink="/connexion">Se connecter</a></p><p class="auth-fine-print">Les comptes enseignants et administrateurs sont créés séparément par l’établissement.</p>
+  <p class="auth-switch">Déjà membre ? <a routerLink="/connexion">Se connecter</a></p><p class="auth-fine-print">Votre rôle est attribué par l’établissement. Vous devrez confirmer votre adresse e-mail.</p>
 </app-auth-layout>

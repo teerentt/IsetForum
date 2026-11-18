@@ -16,7 +16,7 @@ export class RegisterComponent {
     if (this.password !== this.confirmation) { this.error.set('Les mots de passe ne correspondent pas.'); return; }
     if (new TextEncoder().encode(this.password).length > 72) { this.error.set('Le mot de passe dépasse la limite de 72 octets.'); return; }
     this.busy.set(true);
-    try { await this.auth.register({ name: this.name, email: this.email, password: this.password }); await this.router.navigate(['/connexion'], { queryParams: { inscrit: '1', email: this.email.trim() } }); }
+    try { await this.auth.register({ name: this.name, email: this.email, password: this.password }); await this.router.navigate(['/confirmation'], { queryParams: { email: this.email.trim() } }); }
     catch (error) { this.error.set(authError(error)); }
     finally { this.busy.set(false); }
   }

@@ -1,15 +1,24 @@
-@if (ui.mobileNav()) { <button class="nav-backdrop" aria-label="Fermer la navigation" (click)="ui.mobileNav.set(false)"></button> }
-<aside class="sidebar" [class.mobile-open]="ui.mobileNav()" aria-label="Navigation latérale">
+<aside class="sidebar" aria-label="Navigation latérale">
+  @if (forum.person(); as person) {
+    <button class="workspace-card" (click)="ui.navigate('profile')"><span class="avatar">{{ forum.initials(person.name) }}</span><span><strong>{{ person.name }}</strong><small>{{ person.role === 'ADMIN' ? 'Administrateur' : person.role === 'PROFESSOR' ? 'Enseignant' : 'Étudiant' }}</small></span><span class="workspace-arrow" aria-hidden="true">›</span></button>
+  } @else {
+    <button class="workspace-card" (click)="ui.login()"><span class="avatar"><app-icon name="user" /></span><span><strong>Bienvenue au campus</strong><small>Connectez-vous pour participer</small></span></button>
+  }
+  <button class="create-button" (click)="ui.compose()"><app-icon name="plus" />Créer une publication</button>
+  <p class="eyebrow">VOTRE ESPACE</p>
   <nav class="main-nav" aria-label="Navigation principale">
-    <button [class.selected]="ui.view() === 'feed' && !ui.communityId()" (click)="ui.navigate('feed')"><app-icon name="home" />Accueil</button>
+    <button [class.selected]="ui.view() === 'feed' && !ui.communityId()" (click)="ui.navigate('feed')"><app-icon name="home" />Mon fil</button>
     <button [class.selected]="ui.view() === 'communities' || !!ui.communityId()" (click)="ui.navigate('communities')"><app-icon name="users" />Communautés</button>
-    <button [class.selected]="ui.view() === 'profile'" (click)="ui.navigate('profile')"><app-icon name="user" />Mon profil</button>
-    @if (forum.person()?.role === 'admin') { <button [class.selected]="ui.view() === 'admin'" (click)="ui.navigate('admin')"><app-icon name="shield" />Administration</button> }
+    @if (forum.person()) { <button [class.selected]="ui.view() === 'profile'" (click)="ui.navigate('profile')"><app-icon name="user" />Mon profil</button> }
+    @if (forum.person()?.role === 'ADMIN') { <button [class.selected]="ui.view() === 'admin'" (click)="ui.navigate('admin')"><app-icon name="shield" />Administration</button> }
   </nav>
   @if (ui.joined().length) {
-    <section class="community-shortcuts"><h2>Mes communautés</h2>
-      @for (community of ui.joined().slice(0, 4); track community.id) { <button class="community-shortcut" [class.selected]="ui.communityId() === community.id" (click)="ui.openCommunity(community)"><span [class]="'community-icon small ' + community.color"><app-icon [name]="community.icon" /></span><span>{{ community.name }}</span></button> }
+    <section class="community-shortcuts"><h2>MES COMMUNAUTÉS <span>{{ ui.joined().length }}</span></h2>
+    @for (community of ui.joined(); track community.id) { <button class="community-shortcut" [class.current]="ui.communityId() === community.id" (click)="ui.openCommunity(community)"><span class="community-mark">{{ community.name.slice(0,1) }}</span><span>{{ community.name }}</span></button> }
     </section>
   }
-  <footer class="sidebar-footer"><strong>IsetForum · ISET Radès</strong><p>Un campus pour apprendre<br>et partager ensemble.</p><small>Les discussions affichées sont une démonstration locale.</small></footer>
+  <footer class="sidebar-footer">
+    @if (forum.person()) { <button class="text-link" (click)="ui.logout()"><app-icon name="logout" />Se déconnecter</button> } @else { <button class="text-link" (click)="ui.login()">Rejoindre la conversation →</button> }
+    <p class="copyright">Le forum de votre institut.<br>IsetForum · ISET Radès</p>
+  </footer>
 </aside>

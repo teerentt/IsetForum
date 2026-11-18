@@ -2,8 +2,17 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { AdminCommunity, CommunityInput, MembershipRequest } from '../models/admin.models';
+import { RegistrationAuthorization, ImportReport } from '../models/api.models';
 @Injectable({ providedIn: 'root' })
 export class AdminService {
+  authorizations() { return firstValueFrom(this.http.get<RegistrationAuthorization[]>('/api/admin/registration-authorizations')); }
+  async importExcel(file: File) {
+    await this.csrf(); const body = new FormData(); body.append('file', file);
+    return firstValueFrom(this.http.post<ImportReport>('/api/admin/registration-authorizations/import', body));
+  }
+  async removeAuthorization(id: number) {
+    await this.csrf(); await firstValueFrom(this.http.delete('/api/admin/registration-authorizations/' + id));
+  }
   private readonly http = inject(HttpClient);
   communities() { return firstValueFrom(this.http.get<AdminCommunity[]>('/api/admin/communities')); }
   community(id: number) { return firstValueFrom(this.http.get<AdminCommunity>('/api/admin/communities/' + id)); }

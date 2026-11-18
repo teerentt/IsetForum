@@ -1,0 +1,50 @@
+.pdf-box {
+  padding: 20px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: var(--surface-raised);
+  margin: 24px 0;
+}
+.pdf-box>div:first-child {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.pdf-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.upload-label {
+  display: block;
+  margin-top: 16px;
+  font-weight: 600;
+}
+input {
+  display: block;
+  max-width: 100%;
+  margin-top: 8px;
+}
+input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.upload-label {
+  display: inline-block;
+  cursor: pointer;
+  color: var(--primary);
+  border: 1px solid var(--line);
+  padding: 9px 14px;
+  border-radius: 7px;
+  background: var(--surface);
+}
+.upload-label:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}

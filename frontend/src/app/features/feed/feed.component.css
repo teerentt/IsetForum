@@ -1,74 +1,17 @@
-.feed-toolbar {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin:0 0 20px;
-}
-.sort-options {
-  display:flex;
-  gap:8px;
-}
-.sort-options button {
-  font-size:16px;
-  padding:8px 18px;
-  border-radius:24px;
-  color:var(--muted);
-}
-.sort-options button.active {
-  background:var(--primary-soft);
-  color:var(--primary);
-  font-weight:650;
-}
-.post-list {
-  display:grid;
-  gap:20px;
-}
-.community-tabs {
-  margin-top:28px;
-  margin-bottom:20px;
-}
-.community-banner {
-  padding:28px;
-  margin-bottom:24px;
-}
-.community-heading,.community-banner-footer {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:16px;
-}
-.community-banner h1 {
-  font-size:32px;
-  line-height:1.3;
-  margin-top:20px;
-  color:var(--navy);
-}
-.community-banner>p {
-  margin:12px 0 24px;
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.7;
-}
-.community-banner-footer>span {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:14px;
-  color:var(--muted);
-}
-@media(max-width:600px) {
-  .community-banner {
-    padding:20px;
-  }
-  .community-banner h1 {
-    font-size:28px;
-  }
-  .community-banner-footer {
-    align-items:flex-start;
-    flex-direction:column;
-  }
-  .feed-toolbar {
-    flex-wrap:wrap;
-  }
-}
+.feed-toolbar { display:flex; align-items:center; justify-content:space-between; gap:14px; margin:26px 0 22px; }
+.feed-toolbar .text-link { font-size:13px; color:var(--muted); }
+.post-list { display:grid; gap:20px; }
+.composer { padding:22px 24px 16px; }
+.composer-main { display:flex; align-items:center; gap:14px; }
+.composer-prompt { flex:1; text-align:left; color:var(--muted); font-size:16px; padding:12px 4px; }
+.composer-footer { display:flex; justify-content:space-between; align-items:center; gap:16px; padding-top:16px; margin-top:16px; border-top:1px solid var(--line); }
+.composer-footer p { color:var(--muted); font-size:12px; }
+.composer-footer .primary-button { padding:8px 24px; min-height:40px; font-size:14px; }
+.community-banner { padding:28px; }
+.community-heading,.community-banner-footer { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.community-banner h1 { font-size:32px; line-height:1.3; margin:20px 0 12px; color:var(--navy); }
+.community-banner > p { line-height:1.8; color:var(--muted); margin-bottom:24px; }
+.tabs { gap:6px; border:0; flex-wrap:wrap; }
+.tabs button { border:1px solid transparent; border-radius:24px; padding:9px 15px; font-size:14px; margin:0; }
+.tabs button.active { background:var(--surface); border-color:var(--line); color:var(--navy); box-shadow:var(--shadow); }
+@media(max-width:600px) { .composer { padding:18px; } .composer-footer p { max-width:170px; } .feed-toolbar { align-items:flex-start; } .tabs button { padding:8px 10px; font-size:13px; } }

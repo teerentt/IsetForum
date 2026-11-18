@@ -6,7 +6,8 @@
     "start": "ng serve --host 127.0.0.1",
     "build": "ng build",
     "test": "vitest run",
-    "test:browser": "node scripts/auth-browser-check.mjs"
+    "test:browser": "node scripts/auth-browser-check.mjs",
+    "screenshots": "node scripts/capture-desktop.mjs"
   },
   "dependencies": {
     "@angular/common": "^21.0.0",

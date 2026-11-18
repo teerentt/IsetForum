@@ -1,19 +1,13 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DecimalPipe } from '@angular/common';
 import { ForumUiService } from '../../core/services/forum-ui.service';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { PostCardComponent } from '../../shared/components/post-card/post-card.component';
-@Component({ selector: 'app-feed', standalone: true, imports: [DecimalPipe, IconComponent, PostCardComponent], templateUrl: './feed.component.html', styleUrl: './feed.component.css' })
+import { PdfAttachmentComponent } from '../../shared/components/pdf-attachment/pdf-attachment.component';
+@Component({selector:'app-feed',standalone:true,imports:[PostCardComponent,PdfAttachmentComponent],templateUrl:'./feed.component.html',styleUrl:'./feed.component.css'})
 export class FeedComponent implements OnInit {
   readonly ui = inject(ForumUiService); readonly forum = this.ui.forum;
+  readonly community = computed(() => this.forum.community(this.ui.communityId()));
   private readonly route = inject(ActivatedRoute); private readonly destroyRef = inject(DestroyRef);
-  ngOnInit() {
-    this.ui.view.set('feed');
-    this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      this.ui.communityId.set(params.get('id') ?? '');
-      this.ui.communityTab.set('posts');
-    });
-  }
+  ngOnInit() { this.ui.view.set('feed'); this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => { this.ui.communityId.set(Number(params.get('id')) || 0); this.ui.feedFilter.set('all'); void this.forum.load(); }); }
 }

@@ -3,6 +3,26 @@
 <div class="app-layout">
   <app-sidebar />
   <main id="main" tabindex="-1" class="main-content"><router-outlet /></main>
+  <aside class="context-sidebar" aria-label="Autour du campus">
+    <section class="campus-card">
+      <span class="campus-emblem">ISET / RADÈS</span>
+      <p class="eyebrow">UN CAMPUS, MILLE IDÉES</p>
+      <h2>Ça commence<br>par un échange<span>.</span></h2>
+      <p>Un cours à comprendre, un projet à partager. Trouvez votre communauté.</p>
+      <button (click)="ui.navigate('communities')">Explorer le campus <span aria-hidden="true">↗</span></button>
+    </section>
+    <section class="discover-section">
+      <div class="section-heading"><h2>À découvrir</h2><button (click)="ui.navigate('communities')" aria-label="Voir toutes les communautés">Tout voir ↗</button></div>
+      @for (community of ui.forum.communities().slice(0, 4); track community.id) {
+        <button class="discover-community" (click)="ui.openCommunity(community)">
+          <span class="discover-mark">{{ community.name.slice(0, 1) }}</span>
+          <span><strong>{{ community.name }}</strong><small>{{ community.memberCount }} membres · {{ community.visibility === 'PUBLIC' ? 'Publique' : 'Privée' }}</small></span>
+        </button>
+      } @empty { <p class="muted">Les communautés apparaîtront ici.</p> }
+    </section>
+    <section class="community-guide"><h2>Un espace pour chacun</h2><p>Les discussions publiques sont ouvertes à tous. Pour les espaces privés, demandez votre adhésion à l’administrateur.</p></section>
+    <footer>IsetForum · ISET Radès<br>Apprendre. Partager. Avancer ensemble.</footer>
+  </aside>
 </div>
 <app-forum-dialog />
 <app-notification />

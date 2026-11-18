@@ -1,12 +1,1 @@
-<article class="post-card panel">
-  <div class="post-meta"><button class="community-label" (click)="ui.openCommunity(forum.community(post().communityId)!)"><span [class]="'community-icon tiny ' + forum.community(post().communityId)?.color"><app-icon [name]="forum.community(post().communityId)?.icon ?? 'users'" /></span>{{ forum.community(post().communityId)?.name }}</button><span>· {{ ui.time(post().createdAt) }}</span></div>
-  <a class="title-button" [routerLink]="['/forum/publications', post().id]"><h2>{{ post().title }}</h2></a>
-  <p class="post-author">{{ post().author }}@if (post().role === 'professor') { <span> · Enseignant</span> }</p>
-  <p class="post-excerpt">{{ post().body }}</p>
-  @if (post().kind === 'resource') { <span class="resource-badge"><app-icon name="book" />Ressource</span> }
-  <div class="post-actions">
-    <button [class.liked]="ui.has(post(), 'likedBy')" [attr.aria-pressed]="ui.has(post(), 'likedBy')" [attr.aria-label]="'Aimer : ' + post().title" (click)="ui.toggle(post(), 'likedBy')"><app-icon name="heart" />{{ post().likes + post().likedBy.length }}</button>
-    <a [routerLink]="['/forum/publications', post().id]" [attr.aria-label]="'Commentaires : ' + post().title"><app-icon name="message" /><span>{{ post().comments.length }} {{ post().comments.length === 1 ? 'commentaire' : 'commentaires' }}</span></a>
-    <button class="save-button" [class.is-saved]="ui.has(post(), 'savedBy')" [attr.aria-pressed]="ui.has(post(), 'savedBy')" [attr.aria-label]="(ui.has(post(), 'savedBy') ? 'Retirer des favoris : ' : 'Enregistrer : ') + post().title" (click)="ui.toggle(post(), 'savedBy')"><app-icon name="bookmark" /><span>{{ ui.has(post(), 'savedBy') ? 'Enregistré' : 'Enregistrer' }}</span></button>
-  </div>
-</article>
+<article class="post-card panel"><div class="post-meta"><span class="avatar">{{ forum.initials(post().authorName) }}</span><div><strong>{{ post().authorName }}</strong><p>{{ post().createdAt | date:'dd/MM/yyyy à HH:mm' }}</p></div><a class="community-label" [routerLink]="['/forum/communautes', post().communityId]">{{ forum.community(post().communityId)?.name }}</a></div><a class="title-button" [routerLink]="['/forum/publications', post().id]"><h2>{{ post().title }}</h2></a><p class="post-excerpt">{{ post().content }}</p><div class="post-footer"><a class="text-link" [routerLink]="['/forum/publications', post().id]">Lire la discussion →</a>@if (post().authorId === forum.person()?.id) { <span class="muted">Votre publication</span> }</div></article>

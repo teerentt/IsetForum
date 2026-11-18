@@ -51,6 +51,14 @@ export class AuthService {
     this.account.set(null);
     // Cookie is refreshed before the next login/registration request.
   }
+  async confirm(token: string) {
+    await this.csrf();
+    return firstValueFrom(this.http.post<{message: string}>('/api/auth/confirm', { token }));
+  }
+  async resend(email: string) {
+    await this.csrf();
+    return firstValueFrom(this.http.post<{message: string}>('/api/auth/resend-confirmation', { email: email.trim() }));
+  }
 
   expire() { this.account.set(null); }
 }
@@ -59,6 +67,7 @@ export function authError(error: unknown): string {
   if (!(error instanceof HttpErrorResponse) || error.status === 0 || error.status >= 500) {
     return 'Connexion au serveur impossible. Vérifiez que Spring Boot et MySQL sont démarrés, puis réessayez.';
   }
-  if (error.status === 403) return 'Votre session de sécurité a expiré. Veuillez réessayer.';
+  if (error.error?.fields && Object.keys(error.error.fields).length) return Object.values(error.error.fields).join(' ');
+  if (error.status === 403) return error.error?.message ?? 'Votre session de sécurité a expiré. Veuillez réessayer.';
   return error.error?.message ?? 'Une erreur est survenue. Veuillez réessayer.';
 }
