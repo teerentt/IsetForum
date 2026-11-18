@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommunityMembershipRepository extends JpaRepository<CommunityMembership, Long> {
+    void deleteByCommunityId(Long communityId);
     Optional<CommunityMembership> findByCommunityIdAndUserId(Long communityId, Long userId);
     boolean existsByCommunityIdAndUserIdAndStatus(Long communityId, Long userId, MembershipStatus status);
     long countByCommunityIdAndStatus(Long communityId, MembershipStatus status);

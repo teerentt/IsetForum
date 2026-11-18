@@ -11,6 +11,8 @@ import com.example.demo.model.user.User;
 import com.example.demo.repository.community.CommunityRepository;
 import com.example.demo.repository.community.CommunityMembershipRepository;
 import com.example.demo.repository.user.UserRepository;
+import com.example.demo.repository.publication.PublicationRepository;
+import com.example.demo.repository.publication.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,21 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final CommunityMembershipRepository membershipRepository;
     private final UserRepository userRepository;
+    private final CommunityAccessService access;
+    private final PublicationRepository publications;
+    private final CommentRepository comments;
+
+    public void delete(Long id, String email) {
+        access.requireAdmin(email);
+        Community community = getCommunity(id);
+        comments.deleteByPublicationCommunityId(id);
+        comments.flush();
+        publications.deleteByCommunityId(id);
+        publications.flush();
+        membershipRepository.deleteByCommunityId(id);
+        membershipRepository.flush();
+        communityRepository.delete(community);
+    }
 
     @Transactional(readOnly = true)
     public List<CommunityResponse> findAll() {

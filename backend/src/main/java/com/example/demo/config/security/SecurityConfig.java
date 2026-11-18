@@ -52,6 +52,8 @@ public class SecurityConfig {
                 .securityContext(context -> context.securityContextRepository(contextRepository))
                 .sessionManagement(session -> session.sessionAuthenticationStrategy(sessionStrategy))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/api/communities/{id}/publications",
+                                "/api/publications/{id}", "/api/publications/{id}/comments").permitAll()
                         .requestMatchers("/api/auth/csrf", "/api/auth/login", "/api/auth/register", "/error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/communities", "/api/communities/{id}",
                                 "/api/communities/{id}/members").permitAll()
