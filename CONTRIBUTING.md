@@ -2,6 +2,8 @@
 
 ## Préparer son environnement
 
+La livraison courante est le sprint 4 desktop. Voir [son périmètre et ses vérifications](docs/sprint-4.md). Les données de démonstration Angular ont été retirées ; les tests navigateur nécessitent une base MySQL dédiée et le mode local de confirmation e-mail.
+
 Suivez les étapes du [README](README.md). Gardez les paramètres de connexion locaux hors du dépôt et utilisez le profil `dev` pour les données de démonstration.
 
 ## Règles du projet

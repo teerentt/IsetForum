@@ -13,7 +13,9 @@ backend/src/main/java/com/example/demo/
 ├── controller/
 │   ├── auth/             Connexion, inscription et compte courant
 │   ├── community/        Communautés et adhésions
-│   └── admin/            Validation des demandes privées
+│   ├── admin/            Communautés, adhésions et inscriptions autorisées
+│   ├── publication/      Publications et commentaires
+│   └── attachment/       PDF protégés
 ├── dto/
 │   ├── auth/             Requêtes de connexion et d’inscription
 │   ├── user/             Réponse du compte utilisateur
@@ -64,6 +66,8 @@ Chaque composant conserve ses fichiers TypeScript, HTML et CSS. Les couleurs com
 
 Le thème initial est bleu et blanc. La navigation se limite à Accueil, Communautés et Mon profil, avec Administration selon le rôle. Les ressources sont un onglet de la communauté ; les favoris sont un onglet du profil. Chaque publication possède une route `/forum/publications/:id`, utilisable directement ou après actualisation. Les fenêtres de dialogue servent uniquement à créer une publication ou une communauté.
 
-Les comptes et la page `/forum/administration` sont réellement connectés au backend. `AdminService` utilise `/api/admin/communities` et `/api/admin/membership-requests`. Les écrans utilisateur du forum restent en démonstration locale ; leurs données ne sont pas mélangées avec celles de l’administration.
+Depuis le sprint 4, les comptes, l’administration et tous les parcours utilisateur livrés sont connectés au backend. ForumService charge les communautés, les adhésions et le fil autorisé ; AdminService gère le CRUD, les demandes et les autorisations d’inscription. ForumDemoService et les modèles/données locales correspondants ont été retirés. Seul le thème reste conservé dans localStorage.
 
 Le sprint 3 ajoute le domaine `publication` aux couches `model`, `repository`, `dto`, `service` et `controller`. `CommunityAccessService` centralise les contrôles simples de lecture, d’adhésion active, d’auteur et d’administrateur. La migration V3 ajoute `publication` et `publication_comment`. Les suppressions des enfants puis des parents sont explicites et transactionnelles. Voir [Sprint 3](sprint-3.md).
+
+Le sprint 4 ajoute les domaines registration et attachment. User reste l’unique entité de compte, avec un état confirmed. RegistrationAuthorization conserve les adresses et rôles autorisés ; EmailVerificationToken conserve le hash et l’expiration du lien. PdfAttachment stocke un PDF en LONGBLOB pour une communauté ou une publication. Les cascades SQL et Hibernate retirent les PDF quand leur parent est supprimé. V4 et V5 étendent le schéma existant sans modifier les migrations précédentes. Voir [Sprint 4](sprint-4.md).

@@ -1,5 +1,7 @@
 # Sprint 2 — Communautés et adhésions
 
+Document historique. Les parcours et comptes de développement ont évolué avec le [sprint 4](sprint-4.md) ; suivre le README actuel pour démarrer et tester la livraison.
+
 ## Démarrage dans IntelliJ
 
 Gardez MySQL démarré dans Laragon, puis redémarrez `DemoApplication` dans IntelliJ. Le profil `dev` ajoute les comptes et les communautés d’exemple. Il s’active avec l’argument de programme `--spring.profiles.active=dev`.

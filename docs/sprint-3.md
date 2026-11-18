@@ -1,5 +1,7 @@
 # Sprint 3 — Publications, commentaires et administration réelle
 
+Document historique du sprint 3. Le [sprint 4](sprint-4.md) remplace depuis les démonstrations Angular par les API réelles, modifie l’inscription et réserve les anciennes fixtures aux tests. Utiliser le README actuel pour le lancement et la validation.
+
 ## Livré
 
 - API CRUD des publications et commentaires, sans pièces jointes ni réponses imbriquées.
