@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile("dev")
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.dev.demo-data", havingValue = "true")
 @Order(2)
 @RequiredArgsConstructor
 public class CommunityDataSeeder implements CommandLineRunner {

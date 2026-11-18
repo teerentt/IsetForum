@@ -12,6 +12,8 @@ import java.util.List;
 @RestController @RequestMapping("/api") @RequiredArgsConstructor
 public class PublicationController {
     private final PublicationService service;
+    @GetMapping("/publications")
+    public List<PublicationResponse> feed(Authentication authentication) { return service.feed(email(authentication)); }
     @GetMapping("/communities/{parentId}/publications")
     public List<PublicationResponse> list(@PathVariable Long parentId, Authentication authentication) {
         return service.list(parentId, email(authentication));

@@ -29,9 +29,13 @@ class AuthenticationTest {
     @Autowired PasswordEncoder encoder;
     @Autowired DevelopmentDataSeeder seeder;
     @Autowired UserService service;
+    @Autowired com.example.demo.repository.registration.RegistrationAuthorizationRepository authorizations;
 
-    @Test void registrationIsStudentOnlyAndPasswordIsHashed() throws Exception {
+    @Test void registrationUsesAuthorizationAndPasswordIsHashed() throws Exception {
         String email = UUID.randomUUID() + "@isetforum.test";
+        var authorization = new com.example.demo.model.registration.RegistrationAuthorization();
+        authorization.setEmail(email); authorization.setRole(Role.STUDENT); authorization.setUpdatedAt(java.time.LocalDateTime.now());
+        authorizations.saveAndFlush(authorization);
         mvc.perform(post("/api/auth/register").with(csrf()).contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {"name":"  Étudiant Test  ","email":"%s","password":"Password!2026","role":"ADMIN"}

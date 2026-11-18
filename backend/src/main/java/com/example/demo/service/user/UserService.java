@@ -4,6 +4,8 @@ import com.example.demo.dto.user.UserResponse;
 import com.example.demo.enums.Role;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.user.UserRepository;
+import com.example.demo.repository.registration.RegistrationAuthorizationRepository;
+import com.example.demo.service.registration.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final RegistrationAuthorizationRepository authorizations;
+    private final EmailVerificationService verification;
 
     @Transactional
     public UserResponse register(String name, String email, String password) {
@@ -32,13 +36,18 @@ public class UserService implements UserDetailsService {
         if (password.getBytes(StandardCharsets.UTF_8).length > 72) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le mot de passe dépasse la limite de 72 octets.");
         }
+        var authorization = authorizations.findByEmail(normalizedEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Cette adresse n’est pas autorisée à s’inscrire. Contactez l’administration."));
         User user = User.builder()
                 .name(name.trim())
                 .email(normalizedEmail)
                 .password(passwordEncoder.encode(password)) // BCrypt
-                .role(Role.STUDENT)
+                .role(authorization.getRole())
+                .confirmed(false)
                 .build();
-        return UserResponse.from(repository.saveAndFlush(user));
+        repository.saveAndFlush(user);
+        verification.send(user);
+        return UserResponse.from(user);
     }
 
     public UserResponse currentUser(String email) {
@@ -55,6 +64,6 @@ public class UserService implements UserDetailsService {
                 ? new String[]{"ROLE_ADMIN", "ROLE_PROFESSOR", "ROLE_STUDENT"}
                 : new String[]{"ROLE_" + role.name()};
         return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
-                .password(user.getPassword()).authorities(authorities).build();
+                .password(user.getPassword()).authorities(authorities).disabled(!user.isConfirmed()).build();
     }
 }

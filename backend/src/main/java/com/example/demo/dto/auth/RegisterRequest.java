@@ -14,6 +14,9 @@ public class RegisterRequest {
     @Email(message = "L’adresse e-mail est invalide.")
     @Size(max = 254, message = "L’adresse e-mail ne doit pas dépasser 254 caractères.")
     private String email;
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim().toLowerCase(java.util.Locale.ROOT);
+    }
     @NotBlank(message = "Le mot de passe est obligatoire.")
     @Size(min = 8, max = 72, message = "Le mot de passe doit contenir entre 8 et 72 caractères.")
     @lombok.ToString.Exclude

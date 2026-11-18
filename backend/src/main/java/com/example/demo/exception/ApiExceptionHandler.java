@@ -14,6 +14,14 @@ import java.util.LinkedHashMap;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+    @ExceptionHandler(org.springframework.security.authentication.DisabledException.class)
+    ResponseEntity<ApiError> unconfirmed() {
+        return ResponseEntity.status(403).body(new ApiError("Confirmez votre adresse e-mail avant de vous connecter."));
+    }
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    ResponseEntity<ApiError> uploadTooLarge() {
+        return ResponseEntity.status(413).body(new ApiError("Le fichier dépasse la taille autorisée."));
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiError> validation(MethodArgumentNotValidException exception) {
         var fields = new LinkedHashMap<String, String>();

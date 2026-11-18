@@ -19,6 +19,14 @@ public class PublicationService {
     private final CommentRepository comments;
     private final CommunityAccessService access;
     @Transactional(readOnly = true)
+    public List<PublicationResponse> feed(String email) {
+        List<PublicationResponse> result = new ArrayList<>();
+        for (Publication post : publications.findAllByOrderByCreatedAtDescIdDesc()) {
+            if (access.canRead(post.getCommunity(), email)) result.add(PublicationResponse.from(post));
+        }
+        return result;
+    }
+    @Transactional(readOnly = true)
     public List<PublicationResponse> list(Long communityId, String email) {
         access.requireRead(access.community(communityId), email);
         List<PublicationResponse> result = new ArrayList<>();

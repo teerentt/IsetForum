@@ -21,11 +21,15 @@ public class DevelopmentDataSeeder implements CommandLineRunner {
     private final PasswordEncoder encoder;
     @Value("${app.dev.seed-password}")
     private String seedPassword;
+    @Value("${app.dev.demo-data:false}")
+    private boolean demoData;
     @Override
     @Transactional
     public void run(String... args) {
-        seed("Lina Ben Ali", "etudiant@isetforum.test", Role.STUDENT);
-        seed("Pr. Sami Mansour", "professeur@isetforum.test", Role.PROFESSOR);
+        if (demoData) {
+            seed("Lina Ben Ali", "etudiant@isetforum.test", Role.STUDENT);
+            seed("Pr. Sami Mansour", "professeur@isetforum.test", Role.PROFESSOR);
+        }
         seed("Amira Jaziri", "admin@isetforum.test", Role.ADMIN);
     }
     private void seed(String name, String email, Role role) {

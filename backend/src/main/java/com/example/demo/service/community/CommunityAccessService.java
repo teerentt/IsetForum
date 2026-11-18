@@ -31,6 +31,13 @@ public class CommunityAccessService {
         if (user.getRole() == Role.ADMIN) return;
         requireMember(community, user);
     }
+    public boolean canRead(Community community, String email) {
+        if (community.getVisibility() == CommunityVisibility.PUBLIC) return true;
+        if (email == null) return false;
+        User user = user(email);
+        return user.getRole() == Role.ADMIN || memberships.existsByCommunityIdAndUserIdAndStatus(
+                community.getId(), user.getId(), MembershipStatus.ACTIVE);
+    }
     public User requireMember(Community community, String email) {
         User user = user(email);
         requireMember(community, user);

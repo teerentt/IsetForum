@@ -52,7 +52,10 @@ public class SecurityConfig {
                 .securityContext(context -> context.securityContextRepository(contextRepository))
                 .sessionManagement(session -> session.sessionAuthenticationStrategy(sessionStrategy))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/communities/{id}/publications",
+                        .requestMatchers("/api/auth/confirm", "/api/auth/resend-confirmation").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/communities/{id}/pdf", "/api/communities/{id}/pdf/metadata",
+                                "/api/publications/{id}/pdf", "/api/publications/{id}/pdf/metadata").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/publications", "/api/communities/{id}/publications",
                                 "/api/publications/{id}", "/api/publications/{id}/comments").permitAll()
                         .requestMatchers("/api/auth/csrf", "/api/auth/login", "/api/auth/register", "/error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/communities", "/api/communities/{id}",
