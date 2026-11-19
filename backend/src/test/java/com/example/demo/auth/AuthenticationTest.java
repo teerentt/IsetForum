@@ -24,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles({"dev", "test"})
 class AuthenticationTest {
+    @org.springframework.test.context.bean.override.mockito.MockitoBean
+    com.example.demo.service.registration.ConfirmationMailService mail;
     @Autowired MockMvc mvc;
     @Autowired UserRepository users;
     @Autowired PasswordEncoder encoder;

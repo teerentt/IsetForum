@@ -32,7 +32,7 @@ public class EmailVerificationService {
         mail.send(user.getEmail(), token);
     }
     public void confirm(String token) {
-        var value = tokens.findByTokenHash(hash(token)).orElseThrow(() -> invalid());
+        var value = tokens.findByTokenHash(hash(token)).orElseThrow(this::invalid);
         if (!value.getExpiresAt().isAfter(LocalDateTime.now()) || value.getUser().isConfirmed()) throw invalid();
         value.getUser().setConfirmed(true); users.save(value.getUser()); tokens.delete(value);
     }

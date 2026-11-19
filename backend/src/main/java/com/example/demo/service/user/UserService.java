@@ -6,6 +6,7 @@ import com.example.demo.model.user.User;
 import com.example.demo.repository.user.UserRepository;
 import com.example.demo.repository.registration.RegistrationAuthorizationRepository;
 import com.example.demo.service.registration.EmailVerificationService;
+import com.example.demo.service.registration.RegistrationAuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserResponse register(String name, String email, String password) {
-        String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+        String normalizedEmail = RegistrationAuthorizationService.normalize(email);
         if (repository.existsByEmailIgnoreCase(normalizedEmail)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Cette adresse e-mail est déjà utilisée.");
         }
@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = repository.findByEmailIgnoreCase(email.trim().toLowerCase(Locale.ROOT))
+        User user = repository.findByEmailIgnoreCase(RegistrationAuthorizationService.normalize(email))
                 .orElseThrow(() -> new UsernameNotFoundException("Identifiants invalides."));
         Role role = user.getRole() == null ? Role.STUDENT : user.getRole().effective();
         String[] authorities = role == Role.ADMIN
