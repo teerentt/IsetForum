@@ -15,3 +15,5 @@
 .tabs button { border:1px solid transparent; border-radius:24px; padding:9px 15px; font-size:14px; margin:0; }
 .tabs button.active { background:var(--surface); border-color:var(--line); color:var(--navy); box-shadow:var(--shadow); }
 @media(max-width:600px) { .composer { padding:18px; } .composer-footer p { max-width:170px; } .feed-toolbar { align-items:flex-start; } .tabs button { padding:8px 10px; font-size:13px; } }
+
+.community-banner > app-community-visual { margin-bottom:16px; }

@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -7,7 +8,7 @@ import { ForumUiService } from '../../../core/services/forum-ui.service';
 import { authError } from '../../../core/services/auth.service';
 import { Publication, Comment } from '../../../core/models/api.models';
 import { PdfAttachmentComponent } from '../../../shared/components/pdf-attachment/pdf-attachment.component';
-@Component({selector:'app-post-detail',standalone:true,imports:[FormsModule,DatePipe,RouterLink,PdfAttachmentComponent],templateUrl:'./post-detail.component.html',styleUrl:'./post-detail.component.css'})
+@Component({selector:'app-post-detail',standalone:true,imports:[IconComponent,FormsModule,DatePipe,RouterLink,PdfAttachmentComponent],templateUrl:'./post-detail.component.html',styleUrl:'./post-detail.component.css'})
 export class PostDetailComponent implements OnInit {
   readonly ui = inject(ForumUiService); readonly forum = this.ui.forum;
   private readonly route = inject(ActivatedRoute); private readonly destroyRef = inject(DestroyRef);

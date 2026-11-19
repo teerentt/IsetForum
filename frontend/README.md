@@ -1,4 +1,4 @@
-# IsetForum — Angular desktop, sprint 4
+# IsetForum — Angular desktop
 
 Le frontend utilise désormais les API Spring Boot/MySQL pour les parcours livrés. Les services, modèles et composants de démonstration locale ont été retirés. L’interface reprend le template fourni, avec l’identité ISET Radès, des libellés français, un thème clair bleu et blanc et un thème sombre.
 
@@ -47,19 +47,22 @@ npm run build
 npm run test:browser
 ```
 
-La suite unitaire contient 9 tests. Les tests navigateur nécessitent Microsoft Edge, PowerShell et un backend dev sur une base MySQL dédiée. Le scénario crée des adresses uniques et lit leur confirmation depuis l’outbox locale ; il ne nécessite pas de serveur SMTP externe.
+La suite unitaire contient 9 tests. Les tests navigateur nécessitent Microsoft Edge, PowerShell, Mailpit et un backend dev sur une base MySQL dédiée. Le scénario crée des adresses uniques, ouvre leurs e-mails dans Mailpit et clique sur les liens de confirmation. Pour tester le renvoi réel, il attend une minute.
 
 ```powershell
-$env:ISETFORUM_API_URL='http://127.0.0.1:8081'
+$env:ISETFORUM_API_URL='http://127.0.0.1:8082'
+$env:ISETFORUM_MAILPIT_URL='http://127.0.0.1:8025'
 npm run test:browser
 # Après redémarrage du même backend :
 npm run test:browser -- --read-only
 ```
 
-Configurer `ISETFORUM_DEV_OUTBOX` si nécessaire. Les captures et rapports de tests sont dans `artifacts/`, ignoré par Git. Voir le [README principal](../README.md) et le [sprint 4](../docs/sprint-4.md) pour les variables SMTP, le stockage PDF, les limites et le bilan des vérifications.
+Le serveur Angular de test écoute sur 127.0.0.1:4300 : le backend doit utiliser `FRONTEND_URL=http://127.0.0.1:4300`. Le port peut être changé avec `ISETFORUM_BROWSER_PORT`, en adaptant également FRONTEND_URL. Les captures et rapports sont dans `artifacts/`, ignoré par Git. Voir le [README principal](../README.md) et la [référence backend](../docs/architecture.md) pour le démarrage du serveur dédié, les variables SMTP, le stockage PDF et les limites.
 
 ## Design et captures
 
 Le fil s’inspire de Reddit et de la référence Contra : profil et création dans la navigation gauche, cartes de discussion au centre, communautés réelles à droite. Le thème conserve le bleu ISET, avec une version claire et sombre. Les panneaux latéraux restent aux extrémités et le fil est centré sur desktop. Le panneau droit disparaît sous 1150 pixels ; la navigation devient horizontale sous 800 pixels.
+
+Les actions courtes réutilisent `shared/components/icon` avec aria-label, infobulle française, focus clavier et désactivation pendant l’appel. Les formulaires et confirmations gardent des boutons explicites. `shared/components/community-visual` choisit un SVG local selon le nom de la communauté : base de données, code, mathématiques, robotique, langues, projets ou campus, avec une illustration par défaut. Aucune image externe ni migration n’est nécessaire. Les transitions respectent `prefers-reduced-motion`.
 
 Après `npm run build`, lancer `npm run screenshots` avec un backend local contenant les exemples `dev,showcase`. Le script Edge capture cinq vues en **1920 × 1080**, avec `fullPage: false`, dans `../docs/images`. Il consulte les données existantes sans créer de contenu. Configuration facultative : `ISETFORUM_API_URL`, `ISETFORUM_CAPTURE_EMAIL`, `ISETFORUM_CAPTURE_PASSWORD`.

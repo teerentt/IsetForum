@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 
 const paths: Record<string, string> = {
+  edit: 'm16 3 5 5-12 12H4v-5L16 3m-2 2 5 5M3 22h18',
+  trash: 'M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7',
+  upload: 'M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5',
   sun: 'M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0-6v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5',
   moon: 'M21 13a9 9 0 0 1-10-10A9 9 0 1 0 21 13Z',
   mail: 'M3 5h18v14H3V5m0 0 9 7 9-7',

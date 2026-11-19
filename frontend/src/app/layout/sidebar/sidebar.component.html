@@ -14,7 +14,7 @@
   </nav>
   @if (ui.joined().length) {
     <section class="community-shortcuts"><h2>MES COMMUNAUTÉS <span>{{ ui.joined().length }}</span></h2>
-    @for (community of ui.joined(); track community.id) { <button class="community-shortcut" [class.current]="ui.communityId() === community.id" (click)="ui.openCommunity(community)"><span class="community-mark">{{ community.name.slice(0,1) }}</span><span>{{ community.name }}</span></button> }
+    @for (community of ui.joined(); track community.id) { <button class="community-shortcut" [class.current]="ui.communityId() === community.id" (click)="ui.openCommunity(community)"><app-community-visual class="compact" [name]="community.name" /><span>{{ community.name }}</span></button> }
     </section>
   }
   <footer class="sidebar-footer">

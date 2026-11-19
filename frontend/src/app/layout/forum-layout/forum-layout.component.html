@@ -15,7 +15,7 @@
       <div class="section-heading"><h2>À découvrir</h2><button (click)="ui.navigate('communities')" aria-label="Voir toutes les communautés">Tout voir ↗</button></div>
       @for (community of ui.forum.communities().slice(0, 4); track community.id) {
         <button class="discover-community" (click)="ui.openCommunity(community)">
-          <span class="discover-mark">{{ community.name.slice(0, 1) }}</span>
+          <app-community-visual class="compact" [name]="community.name" />
           <span><strong>{{ community.name }}</strong><small>{{ community.memberCount }} membres · {{ community.visibility === 'PUBLIC' ? 'Publique' : 'Privée' }}</small></span>
         </button>
       } @empty { <p class="muted">Les communautés apparaîtront ici.</p> }

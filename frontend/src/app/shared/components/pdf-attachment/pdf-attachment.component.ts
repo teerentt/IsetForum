@@ -1,8 +1,9 @@
+import { IconComponent } from '../icon/icon.component';
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { ForumService } from '../../../core/services/forum.service';
 import { authError } from '../../../core/services/auth.service';
 import { PdfInfo } from '../../../core/models/api.models';
-@Component({selector: 'app-pdf-attachment', standalone: true, templateUrl: './pdf-attachment.component.html', styleUrl: './pdf-attachment.component.css'})
+@Component({selector: 'app-pdf-attachment', standalone: true, imports: [IconComponent], templateUrl: './pdf-attachment.component.html', styleUrl: './pdf-attachment.component.css'})
 export class PdfAttachmentComponent {
   readonly kind = input.required<'communities' | 'publications'>();
   readonly contentId = input.required<number>();

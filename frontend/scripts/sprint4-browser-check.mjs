@@ -8,7 +8,7 @@ import { chromium } from 'playwright';
 
 const root = resolve('dist/isetforum/browser');
 const backend = process.env.ISETFORUM_API_URL || 'http://127.0.0.1:8080';
-const outbox = resolve(process.env.ISETFORUM_DEV_OUTBOX || '../backend/target/sprint4-test-confirmations.log');
+const mailpit = process.env.ISETFORUM_MAILPIT_URL || 'http://127.0.0.1:8025';
 const password = 'IsetForumDev!2026';
 const reportPath = resolve('artifacts/sprint4-verification.json');
 const types = {'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.svg':'image/svg+xml'};
@@ -26,7 +26,7 @@ const server = createServer(async (request, response) => {
     response.end(await readFile(file));
   } catch { response.writeHead(404).end(); }
 });
-await new Promise(resolve => server.listen(0,'127.0.0.1',resolve));
+await new Promise(resolve => server.listen(Number(process.env.ISETFORUM_BROWSER_PORT || 4300),'127.0.0.1',resolve));
 const url = 'http://127.0.0.1:' + server.address().port;
 let browser;
 const errors = [];
@@ -46,6 +46,17 @@ async function login(page, email) {
   await page.getByRole('button',{name:'Se connecter',exact:true}).click();
   await page.getByRole('heading',{name:'Le fil du campus',exact:true}).waitFor();
 }
+async function confirmationMessage(email, previousId) {
+  for (let attempt=0; attempt<30; attempt++) {
+    const response = await fetch(mailpit+'/api/v1/search?query='+encodeURIComponent('to:'+email));
+    assert.ok(response.ok,'Mailpit doit être démarré');
+    const data = await response.json();
+    const message = data.messages.find(message => message.ID !== previousId);
+    if (message) return await (await fetch(mailpit+'/api/v1/message/'+message.ID)).json();
+    await new Promise(resolve=>setTimeout(resolve,300));
+  }
+  throw new Error('Aucun e-mail de confirmation reçu dans Mailpit pour '+email);
+}
 async function register(page, email, name) {
   await page.goto(url+'/inscription');
   await page.getByLabel('Nom complet').fill(name);
@@ -59,12 +70,26 @@ async function register(page, email, name) {
   await page.getByLabel('Mot de passe',{exact:true}).fill(password);
   await page.getByRole('button',{name:'Se connecter',exact:true}).click();
   await page.getByRole('alert').filter({hasText:'Confirmez votre adresse e-mail'}).waitFor();
-  const lines = (await readFile(outbox,'utf8')).trim().split(/\r?\n/);
-  const line = lines.reverse().find(line => line.startsWith(email+' '));
-  assert.ok(line,'Un lien local doit être disponible pour '+email);
-  const token = line.match(/token=([A-Za-z0-9_-]+)/)[1];
-  await page.goto(url+'/confirmation?token='+token);
-  await page.getByText('Votre compte est confirmé. Vous pouvez vous connecter.',{exact:true}).waitFor();
+  let message = await confirmationMessage(email);
+  let token = message.Text.match(/token=([A-Za-z0-9_-]+)/)[1];
+  if (email.startsWith('etudiant.')) {
+    await api(page.request,'/api/auth/resend-confirmation','POST',{email},429);
+    // Real SMTP resend after the one-minute server throttle; process yields while waiting.
+    await page.waitForTimeout(61000);
+    await api(page.request,'/api/auth/resend-confirmation','POST',{email});
+    const replacement = await confirmationMessage(email, message.ID);
+    await api(page.request,'/api/auth/confirm','POST',{token},400);
+    token = replacement.Text.match(/token=([A-Za-z0-9_-]+)/)[1];
+    message = replacement;
+  }
+  const mailPage = await page.context().newPage();
+  await mailPage.goto(mailpit+'/view/'+message.ID);
+  const link = mailPage.locator('a[href*="/confirmation?token="]');
+  assert.equal(new URL(await link.getAttribute('href')).origin,url,'FRONTEND_URL doit correspondre au serveur de test : '+url);
+  await link.evaluate(anchor => anchor.setAttribute('target','_blank'));
+  const [confirmationPage] = await Promise.all([mailPage.waitForEvent('popup'),link.click()]);
+  await confirmationPage.getByText('Votre compte est confirmé. Vous pouvez vous connecter.',{exact:true}).waitFor();
+  await confirmationPage.close(); await mailPage.close();
   await api(page.request,'/api/auth/confirm','POST',{token},400);
   await login(page,email);
 }

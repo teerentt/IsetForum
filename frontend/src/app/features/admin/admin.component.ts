@@ -1,3 +1,4 @@
+import { IconComponent } from '../../shared/components/icon/icon.component';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -8,7 +9,7 @@ import { authError } from '../../core/services/auth.service';
 import { AdminCommunity, CommunityInput, MembershipRequest } from '../../core/models/admin.models';
 import { RegistrationAuthorization, ImportReport } from '../../core/models/api.models';
 import { PdfAttachmentComponent } from '../../shared/components/pdf-attachment/pdf-attachment.component';
-@Component({ selector: 'app-admin', standalone: true, imports: [FormsModule, DatePipe, PdfAttachmentComponent], templateUrl: './admin.component.html', styleUrl: './admin.component.css' })
+@Component({ selector: 'app-admin', standalone: true, imports: [IconComponent,FormsModule, DatePipe, PdfAttachmentComponent], templateUrl: './admin.component.html', styleUrl: './admin.component.css' })
 export class AdminComponent implements OnInit {
   readonly ui = inject(ForumUiService);
   private readonly api = inject(AdminService);
