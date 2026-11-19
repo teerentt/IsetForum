@@ -2,7 +2,7 @@
 
 ## Préparer son environnement
 
-La livraison courante est le sprint 4 desktop. Voir [son périmètre et ses vérifications](docs/sprint-4.md). Les données de démonstration Angular ont été retirées ; les tests navigateur nécessitent une base MySQL dédiée et le mode local de confirmation e-mail.
+L’interface utilise les API réelles. Voir la [référence backend](docs/architecture.md) pour les règles et les vérifications. Les tests navigateur nécessitent une base MySQL dédiée et Mailpit pour les confirmations.
 
 Suivez les étapes du [README](README.md). Gardez les paramètres de connexion locaux hors du dépôt et utilisez le profil `dev` pour les données de démonstration.
 
@@ -27,7 +27,7 @@ npm test
 npm run build
 ```
 
-Les tests navigateur sont utiles pour les changements d’interface. Ils nécessitent le backend avec le profil `dev` et Microsoft Edge installé. Les tests sur MySQL créent des données de vérification ; voir [Sprint 2](docs/sprint-2.md).
+Les tests navigateur nécessitent Microsoft Edge, Mailpit et le backend avec le profil `dev` sur une base MySQL dédiée. Ils créent des données de vérification ; voir la [référence backend](docs/architecture.md#tests-et-vérifications).
 
 ## Commits
 

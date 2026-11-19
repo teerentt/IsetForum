@@ -1,230 +1,215 @@
 <div align="center">
-  <img src="frontend/public/assets/logo-iset.png" alt="ISET Radès" width="76" />
+  <img src="frontend/public/assets/logo-iset.png" alt="Logo ISET Radès" width="76" />
   <h1>IsetForum</h1>
-  <p><strong>Un campus. Mille idées. Une communauté.</strong></p>
+  <p><strong>Un campus. Mille idées. Une communauté pour les faire grandir.</strong></p>
   <p>Forum académique pour les étudiants et enseignants de l’ISET Radès.</p>
-  <p>Java 17 · Spring Boot 3.5 · Angular 21 · MySQL 8</p>
+  <p>
+    <img alt="Java 17" src="https://img.shields.io/badge/Java-17-437291?style=flat-square" />
+    <img alt="Spring Boot 3.5" src="https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?style=flat-square" />
+    <img alt="Angular 21" src="https://img.shields.io/badge/Angular-21-DD0031?style=flat-square" />
+    <img alt="MySQL 8" src="https://img.shields.io/badge/MySQL-8-4479A1?style=flat-square" />
+  </p>
+  <p>
+    <a href="#aperçu">Aperçu</a> ·
+    <a href="#fonctionnalités">Fonctionnalités</a> ·
+    <a href="#installation">Installation</a> ·
+    <a href="#architecture">Architecture</a> ·
+    <a href="#tests">Tests</a>
+  </p>
 </div>
 
-## Version desktop — sprint 4
+## Le projet
 
-Le forum utilise les API Spring Boot et les données MySQL pour l’authentification, les communautés, les adhésions, les publications, les commentaires, les PDF et l’administration. Le nouveau design s’inspire du fil Reddit et de la référence Contra : navigation à gauche, publications au centre et communautés à découvrir à droite. Cartes arrondies, typographie lisible, identité bleu et blanc de l’ISET Radès et mode sombre. Toutes les actions utilisent les API réelles.
+IsetForum est un projet académique de forum : créer des communautés, échanger entre étudiants et enseignants, et partager des ressources pédagogiques. L’interface française s’inspire de la simplicité de Reddit, avec l’identité de l’ISET Radès : bleu et blanc, textes lisibles et mode sombre au choix.
 
-![Fil IsetForum en mode clair — capture 1920 × 1080](docs/images/forum-light.png)
-
-Le sprint 4 est la livraison desktop finale de ce périmètre. Votes, favoris, notifications et commentaires imbriqués ne sont pas inclus. Sur écran étroit, le panneau droit disparaît et la navigation passe au-dessus du fil ; la refonte mobile complète reste hors périmètre.
-
-<details>
-<summary>Mode sombre, discussion, administration et connexion</summary>
-
-![Fil en mode sombre](docs/images/forum-dark.png)
-![Discussion et PDF en mode sombre](docs/images/sprint4-discussion-dark.png)
-![Administration des inscriptions autorisées](docs/images/sprint4-admin-import.png)
-![Connexion IsetForum](docs/images/login.png)
-
-</details>
-
-Les captures desktop montrent uniquement le viewport **1920 × 1080 (16:9)**, sans capture de la page entière. Elles présentent les exemples persistés dans MySQL avec le profil optionnel `dev,showcase`.
+Le projet conserve une architecture simple : un backend Spring Boot organisé en couches, un frontend Angular et une base MySQL gérée localement avec Laragon/phpMyAdmin. Les parcours du forum et de l’administration utilisent les API réelles et des données persistantes.
 
 ## Fonctionnalités
 
-| Fonctionnalité | État |
-| --- | --- |
-| Autorisations d’inscription Excel : email + rôle | Import, liste et retrait réservés à ADMIN |
-| Inscription étudiante et enseignante | Adresse autorisée et rôle attribué par le serveur |
-| Confirmation e-mail | Lien unique valable 24 h ; renvoi après une minute |
-| Authentification | BCrypt, session HttpOnly, CSRF, restauration après actualisation |
-| Communautés | Création, consultation, adhésion publique ou demande privée |
-| Administration des communautés | CRUD réel et décisions d’adhésion |
-| Publications et commentaires | Création, lecture, modification et suppression selon les droits |
-| Pièces jointes PDF | Ajout, remplacement, suppression et téléchargement protégés |
-| Profil | Compte courant et publications de l’utilisateur |
-| Recherche | Fil et communautés, sur les données serveur chargées |
+- Inscription étudiante ou enseignante sur autorisation importée depuis Excel.
+- Confirmation par e-mail, renvoi du lien, connexion et session sécurisée avec CSRF.
+- Communautés publiques et privées ; adhésion directe ou demande approuvée par un administrateur.
+- Publications et commentaires : création, lecture, modification et suppression selon les droits.
+- PDF attachés aux communautés et publications, avec téléchargement protégé.
+- Administration des communautés, demandes d’adhésion et autorisations d’inscription.
+- Recherche dans le fil, profil personnel, thèmes clair et sombre, visuels thématiques locaux.
 
-Les présentations des communautés restent publiques. Le contenu d’une communauté publique est lisible sans connexion ; le contenu privé, PDF compris, est réservé aux membres actifs et aux administrateurs. Une demande PENDING ne donne aucun accès privé.
+Les présentations des communautés sont publiques. Leurs contenus publics sont lisibles sans connexion ; les contenus privés et leurs PDF sont réservés aux membres actifs et aux administrateurs. Écrire exige une adhésion active. L’auteur vient toujours de la session. Votes, favoris, notifications et réponses imbriquées ne sont pas implémentés.
 
-Écrire exige une adhésion ACTIVE, même pour un administrateur. L’auteur provient de la session ; il peut modifier son contenu tant qu’il est membre actif. L’auteur membre actif ou un administrateur peut supprimer une publication ou un commentaire. Un administrateur ne réécrit pas le texte d’un autre auteur. Les droits sont vérifiés côté serveur, y compris sur les liens directs de téléchargement.
+## Aperçu
 
-## Structure
+![Accueil IsetForum — bleu et blanc](docs/images/forum-light.png)
 
-```text
-IsetForum/
-├── backend/
-│   ├── src/main/java/com/example/demo/
-│   │   ├── controller/   Routes auth, communautés, publications, PDF et administration
-│   │   ├── dto/          Données reçues et réponses API
-│   │   ├── service/      Règles métier et transactions
-│   │   ├── repository/   Accès JPA aux données
-│   │   ├── model/        Comptes, autorisations, jetons, communautés, contenus et PDF
-│   │   ├── config/       Sécurité et administrateur initial de développement
-│   │   └── exception/    Messages d’erreur communs
-│   ├── src/main/resources/db/migration/   V1 à V5
-│   ├── src/test/         Tests Java et fixtures
-│   ├── .mvn/
-│   ├── mvnw / mvnw.cmd
-│   └── pom.xml
-├── frontend/             Angular : core, layout, features et shared
-├── docs/                 Documentation, exemples Excel/PDF et captures
-└── scripts/              Outils de vérification et nettoyage explicite local
+<details>
+<summary>Connexion, thème sombre, discussion et administration</summary>
+
+![Connexion](docs/images/login.png)
+![Fil sombre](docs/images/forum-dark.png)
+![Discussion et PDF](docs/images/sprint4-discussion-dark.png)
+![Administration](docs/images/sprint4-admin-import.png)
+
+</details>
+
+Les captures montrent un viewport desktop **1920 × 1080 (16:9)**, sans toute la page déroulante. Le fil reste centré entre les panneaux latéraux. Les améliorations visuelles sont destinées au desktop ; une adaptation élémentaire existe sur écran étroit.
+
+## Installation
+
+### Prérequis
+
+- JDK 17 ou supérieur ; Maven Wrapper fourni.
+- MySQL 8, par exemple avec Laragon. phpMyAdmin sert à consulter la base.
+- Node.js 22.19 ou supérieur compatible Angular 21, npm et Angular CLI 21 pour la commande directe `ng serve`.
+- Docker Desktop démarré avec Docker Compose pour Mailpit.
+
+### 1. MySQL et Mailpit
+
+Démarrer MySQL dans Laragon. Depuis la racine du dépôt :
+
+```powershell
+docker compose up -d mailpit
+docker compose ps
 ```
 
-Le backend conserve ses couches simples : controller → service → repository → MySQL. User reste l’unique entité de compte. RegistrationAuthorization contient uniquement les adresses et rôles autorisés ; EmailVerificationToken conserve le hash du jeton et son expiration. Chaque composant Angular possède ses propres fichiers TypeScript, HTML et CSS.
+Mailpit reçoit les e-mails sur **localhost:1025**. Ouvrir sa boîte sur **http://localhost:8025**. Les ports Compose sont liés à 127.0.0.1 uniquement ; les messages restent dans le volume Docker local. Si une instance Mailpit utilise déjà ces ports, la conserver ou l’arrêter avant de lancer celle de Compose.
 
-## Démarrage local
+### 2. Backend Spring Boot
 
-Prérequis : JDK 17 ou supérieur, MySQL 8 lancé avec Laragon, Node 22.19 ou une version compatible Angular 21, npm. Les commandes ci-dessous partent de la racine du dépôt.
-
-### Backend
+Dans un terminal PowerShell :
 
 ```powershell
 cd backend
+$env:DB_URL='jdbc:mysql://localhost:3306/isetforum?createDatabaseIfNotExist=true'
+$env:DB_USERNAME='root'
+$env:DB_PASSWORD=''
 .\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
-Dans IntelliJ, importer `backend/pom.xml`, puis lancer `DemoApplication` avec l’argument `--spring.profiles.active=dev`. Dans VS Code, ouvrir la racine du dépôt et importer le projet Java Maven. Le backend écoute sur http://localhost:8080.
+Le serveur écoute sur http://localhost:8080. Flyway applique les migrations V1 à V5 ; Hibernate valide ensuite le schéma. Les migrations préservent les comptes existants. Dans IntelliJ, ouvrir `backend/pom.xml`, sélectionner le JDK et lancer `com.example.demo.DemoApplication` avec le profil actif `dev`.
 
-La configuration locale utilise la base `isetForum` (affichée `isetforum` par MySQL sous Windows), l’utilisateur root et un mot de passe vide. `DB_URL`, `DB_USERNAME` et `DB_PASSWORD` permettent de les adapter. Flyway applique les migrations ; Hibernate valide le schéma. Ne pas modifier V1 à V3 : V4 ajoute les inscriptions et la confirmation, V5 ajoute les PDF. La migration V4 conserve les comptes existants comme confirmés.
+Le profil dev utilise Mailpit par défaut, sans authentification SMTP ni STARTTLS. Aucun lien de confirmation n’est écrit dans un fichier ou dans les logs. Si Mailpit est indisponible, l’inscription retourne 503 et la création du compte est annulée : démarrer Mailpit puis réessayer.
 
-### Angular
+### 3. Frontend Angular
 
-Dans un autre terminal :
+Dans un autre terminal PowerShell :
 
 ```powershell
 cd frontend
 npm ci
-```
-
-Installer Angular CLI si nécessaire avec `npm install -g @angular/cli@21`, puis :
-
-```text
 ng serve
 ```
 
-Ouvrir http://localhost:4200. Le proxy Angular transmet `/api/**` à Spring Boot sur 8080. MySQL et Spring Boot se lancent séparément. Sur Windows, utiliser Command Prompt ou `ng.cmd serve` si PowerShell bloque les scripts.
+Ouvrir http://localhost:4200. Le proxy Angular transmet `/api` au backend sur 8080. Sans CLI global, utiliser `npm start`, qui lance le CLI installé dans le projet.
 
-### Administrateur initial et base propre
+### 4. Tester une inscription
 
-Après validation d’Excel, les données applicatives de la base principale ont été supprimées à la demande de l’utilisateur. La structure et flyway_schema_history sont conservées. À l’issue de ce nettoyage, seul l’administrateur initial confirmé était présent ; les exemples de la section suivante ont ensuite été ajoutés à la demande de l’utilisateur :
+1. Se connecter avec l’administrateur local : `admin@isetforum.test`, mot de passe initial `IsetForumDev!2026`.
+2. Ouvrir Administration → Inscriptions autorisées. Importer [l’exemple Excel](docs/examples/inscriptions-autorisees.xlsx), colonnes `email` et `role` : STUDENT ou PROFESSOR.
+3. Se déconnecter et inscrire `etudiant.exemple@isetforum.test` ou `prof.exemple@isetforum.test`.
+4. Ouvrir http://localhost:8025, lire « Confirmez votre compte IsetForum », puis cliquer sur le lien.
+5. Se connecter au forum. Avant confirmation, la connexion est refusée.
 
-| E-mail | Mot de passe local initial |
-| --- | --- |
-| admin@isetforum.test | IsetForumDev!2026 |
+Le lien expire après 24 heures et ne fonctionne qu’une fois. Le renvoi est disponible sur `/confirmation` après une minute et remplace le précédent lien. Un envoi échoué conserve l’ancien lien. Les e-mails fictifs restent dans Mailpit et ne sont pas expédiés sur Internet.
 
-Le profil dev crée cet administrateur s’il est absent et conserve son mot de passe s’il existe. `DEV_SEED_PASSWORD` permet de choisir le mot de passe avant sa première création. Aucun étudiant, enseignant, communauté ou contenu n’est ajouté au démarrage normal. Les anciennes fixtures sont activées uniquement dans les tests Java ; ne pas activer `app.dev.demo-data` sur la base de travail.
+### Données d’exemple facultatives
 
-### Exemples pour explorer l’interface
-
-Après le nettoyage initial, un jeu de données a été ajouté à la demande de l’utilisateur : **9 comptes, 6 communautés, 13 publications, 26 commentaires, 12 PDF et 3 demandes privées en attente**. Ces exemples sont de vraies données MySQL ; ils restent visibles avec un démarrage dev normal et après actualisation. La base n’est donc plus vide.
-
-| Profil d’exemple | E-mail | Mot de passe local |
-| --- | --- | --- |
-| Administrateur | admin@isetforum.test | IsetForumDev!2026 |
-| Étudiante : accès PFE actif, robotique en attente | etudiant@isetforum.test | IsetForumDev!2026 |
-| Enseignant | professeur@isetforum.test | IsetForumDev!2026 |
-| Enseignante | leila@isetforum.test | IsetForumDev!2026 |
-
-Les autres étudiants sont youssef, ines, malek, nour et aziz, avec le domaine @isetforum.test et le même mot de passe de démonstration. Ces comptes fictifs sont préconfirmés pour explorer les écrans ; l’inscription réelle reste soumise à Excel et à la confirmation e-mail.
-
-Le profil opt-in showcase permet de réinsérer les exemples sur une base qui n’en contient pas encore :
+Pour explorer une interface déjà remplie :
 
 ```powershell
 cd backend
 .\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev,showcase"
 ```
 
-InterfaceExampleSeeder n’est pas exécuté avec dev seul. Il conserve les comptes et communautés existants et ne duplique pas les discussions au redémarrage. Il ne remet pas à zéro les mots de passe des comptes existants. Les panneaux latéraux occupent désormais les bords gauche et droit, avec un contenu central symétrique ; la disposition a été vérifiée à 1366 et 1920 pixels de largeur.
+Sur une base neuve, ce profil ajoute 9 comptes fictifs, 6 communautés publiques/privées, 13 publications, 26 commentaires et 12 PDF. Il conserve les comptes et communautés existants et ne remet pas leurs mots de passe à zéro.
 
-L’administrateur importe ensuite la liste Excel. Les étudiants et enseignants s’inscrivent et confirment eux-mêmes leur adresse. Exemple fourni : [inscriptions-autorisees.xlsx](docs/examples/inscriptions-autorisees.xlsx). Ses adresses sont fictives et utilisables avec la confirmation locale.
+| Compte local | Rôle | Mot de passe initial |
+| --- | --- | --- |
+| admin@isetforum.test | Administrateur | IsetForumDev!2026 |
+| etudiant@isetforum.test | Étudiant | IsetForumDev!2026 |
+| professeur@isetforum.test | Enseignant | IsetForumDev!2026 |
 
-Le script `scripts/reset-local-data.sql` documente le nettoyage demandé. Il efface définitivement les données de développement : ne pas l’exécuter pour un démarrage ordinaire.
+`DEV_SEED_PASSWORD` permet de choisir un autre mot de passe **avant** la première création des comptes de développement.
 
-## Import Excel et confirmation
+## Configuration
 
-L’onglet **Inscriptions autorisées** de `/forum/administration` accepte un fichier .xlsx de 2 Mo maximum, première feuille, colonnes email et role sur la première ligne, au maximum 5 000 lignes de données. Les rôles permis sont STUDENT et PROFESSOR ; ADMIN est refusé. Les adresses sont nettoyées et mises en minuscules à l’import et à l’inscription.
+[backend/.env.example](backend/.env.example) documente les variables. Spring Boot ne lit pas automatiquement ce fichier : définir les variables dans PowerShell avec `$env:NOM='valeur'`, ou dans la configuration d’exécution de l’IDE.
 
-Le bilan distingue les ajouts, les mises à jour, les doublons dans le fichier et les lignes invalides avec leur numéro. Le premier doublon valide est retenu. Les entrées absentes d’un nouvel import sont conservées. Modifier ou retirer une autorisation ne modifie ni ne désactive les comptes déjà créés.
-
-En profil dev, la confirmation est affichée dans les logs Spring Boot et dans `backend/target/dev-confirmations.log`. Ouvrir le lien `/confirmation?token=...` avec Angular démarré. Le jeton est aléatoire, stocké uniquement sous forme de hash dans MySQL, expire après 24 heures et ne fonctionne qu’une fois. Un renvoi invalide le précédent lien. La connexion est bloquée avant confirmation.
-
-### Envoi réel des e-mails
-
-Configurer dans l’environnement du processus Spring Boot :
-
-| Variable | Utilité |
+| Variables | Usage |
 | --- | --- |
-| MAIL_MODE | smtp pour un envoi réel ; console en développement uniquement |
-| SMTP_HOST / SMTP_PORT | Serveur SMTP et port, 587 par défaut |
-| SMTP_USERNAME / SMTP_PASSWORD | Identifiants du serveur SMTP |
-| SMTP_AUTH | Authentification SMTP, true par défaut |
-| SMTP_STARTTLS | STARTTLS, true par défaut |
-| MAIL_FROM | Expéditeur autorisé par le fournisseur |
-| FRONTEND_URL | URL publique Angular utilisée dans le lien, sans slash final |
+| DB_URL, DB_USERNAME, DB_PASSWORD | Connexion MySQL |
+| FRONTEND_URL | Origine des liens de confirmation ; défaut http://localhost:4200 |
+| DEV_SMTP_HOST, DEV_SMTP_PORT | Mailpit en profil dev ; localhost et 1025 |
+| SMTP_HOST, SMTP_PORT | Serveur SMTP hors profil dev |
+| SMTP_USERNAME, SMTP_PASSWORD | Identifiants du fournisseur SMTP |
+| SMTP_AUTH, SMTP_STARTTLS | Authentification et chiffrement SMTP hors dev ; true par défaut |
+| MAIL_FROM | Expéditeur ; noreply@isetforum.tn par défaut |
+| PDF_MAX_BYTES | Limite d’un PDF ; 5242880 octets par défaut |
 
-Le fichier [backend/.env.example](backend/.env.example) sert de modèle. Spring Boot ne charge pas automatiquement ce fichier : renseigner les variables dans l’IDE ou le terminal. Le mode console est limité aux profils dev/test ; les liens ne sont pas exposés par une API publique. L’envoi vers un fournisseur SMTP réel n’a pas été vérifié pendant cette livraison.
+La configuration SMTP de production reste indépendante du profil dev. Le mode de journalisation console a été supprimé. Un fournisseur SMTP externe doit être configuré et vérifié avant tout déploiement.
 
-## PDF persistants
-
-Un administrateur gère un PDF par communauté depuis son détail ; un auteur membre actif gère un PDF par publication depuis le formulaire ou la discussion. Le serveur vérifie l’extension, la signature et l’ouverture réelle du PDF avec PDFBox. Les fichiers vides, illisibles, chiffrés ou de plus de 5 Mio par défaut sont refusés.
-
-Les octets sont stockés dans MySQL, dans `pdf_attachment` (LONGBLOB), avec le nom, la taille et la date. Aucun dossier de fichiers persistant n’est nécessaire. Sauvegarder MySQL sauvegarde donc les PDF. Le remplacement met à jour le même enregistrement ; les suppressions des contenus suppriment leurs pièces jointes par clés étrangères en cascade. Les téléchargements vérifient les droits et sont servis en pièce jointe, sans cache.
-
-`PDF_MAX_BYTES` règle la limite serveur, 5242880 par défaut ; les limites multipart sont configurées dans application.properties (6 Mo par fichier et 7 Mo par requête). L’interface et le scénario livré utilisent la limite standard de 5 Mio. [Document PDF fictif](docs/examples/document.pdf).
-
-## API principales
-
-| Domaine | Routes |
-| --- | --- |
-| Authentification | `/api/auth/register`, `/login`, `/me`, `/logout`, `/csrf` sous `/api/auth` |
-| Confirmation | `/api/auth/confirm`, `/api/auth/resend-confirmation` |
-| Autorisations | `/api/admin/registration-authorizations`, `/import`, `/{id}` |
-| Communautés | `/api/communities`, `/{id}`, `/{id}/membership`, `/{id}/members` |
-| Fil et publications | `/api/publications`, `/api/communities/{id}/publications`, `/api/publications/{id}` |
-| Commentaires | `/api/publications/{id}/comments`, `/api/comments/{id}` |
-| PDF | `/api/communities/{id}/pdf`, `/api/publications/{id}/pdf`, et leur sous-route `/metadata` |
-| Administration | `/api/admin/communities`, `/api/admin/membership-requests` |
-
-Les écritures nécessitent le jeton CSRF. Les imports et envois PDF sont multipart, champ file. Les autres corps sont JSON. Les erreurs utilisent `{ message, fields }` en français. Voir [sprint 4](docs/sprint-4.md) pour les opérations détaillées et le scénario de démonstration.
-
-## Vérification
-
-Depuis backend :
-
-```powershell
-.\mvnw.cmd test
-```
-
-Depuis frontend :
+## Architecture
 
 ```text
+IsetForum/
+├── backend/
+│   ├── src/main/java/com/example/demo/
+│   │   ├── controller/   Routes HTTP et validation des DTO
+│   │   ├── service/      Règles métier et transactions
+│   │   ├── repository/   Accès Spring Data JPA
+│   │   ├── model/        Entités MySQL
+│   │   ├── dto/          Entrées et réponses API
+│   │   ├── config/       Sécurité et données de développement
+│   │   └── exception/    Réponses d’erreur
+│   └── src/main/resources/db/migration/
+├── frontend/             Angular : core, layout, features et shared
+├── docs/                 Référence backend, exemples et captures
+├── scripts/              Outils locaux
+└── compose.yaml          Mailpit local
+```
+
+Le flux reste `controller → service → repository → MySQL`. User est l’unique entité de compte ; les autorisations d’inscription sont une liste d’adresses et de rôles, pas une seconde catégorie d’utilisateurs.
+
+Consulter la [référence complète du backend](docs/architecture.md) pour le modèle, les permissions, les routes, les transactions et les tests. Voir aussi le [frontend](frontend/README.md) et [Contribuer](CONTRIBUTING.md).
+
+## Tests
+
+```powershell
+cd backend
+.\mvnw.cmd test
+cd ../frontend
 npm test
 npm run build
 ```
 
-Résultats de cette livraison : 51 tests Java, 9 tests Angular et compilation de production réussis. Les tests H2 ne valident pas Flyway ; les migrations ont aussi été exécutées sur MySQL dédié et sur la base principale avant nettoyage. Les 11 anciens comptes sont restés confirmés après migration, avant leur suppression explicitement demandée.
+Les tests Java utilisent H2 et un transport mail simulé. Ils ne nécessitent ni Mailpit ni MySQL. Les migrations et les comportements SMTP doivent aussi être vérifiés en intégration.
 
-Pour les tests navigateur desktop, démarrer un backend dev sur une **base dédiée**, puis depuis frontend dans PowerShell :
+Le parcours navigateur réel utilise Edge, Mailpit et une **base MySQL dédiée**, car il crée des comptes et des contenus. Les commandes complètes, les cas de panne SMTP et la vérification après redémarrage sont dans la [documentation backend](docs/architecture.md#tests-et-vérifications).
+
+### Vérifications réalisées
+
+| Vérification | Résultat |
+| --- | --- |
+| Tests backend | 53 tests Java réussis |
+| Tests frontend | 9 tests Angular réussis |
+| Build Angular de production | Réussi |
+| Confirmation et renvoi | E-mails reçus dans Mailpit, liens ouverts et usage unique vérifié |
+| SMTP indisponible | Réponse 503 et inscription annulée ; nouvelle tentative possible avec la même adresse |
+| Permissions | Accès autorisés et refusés vérifiés sur les communautés privées et leurs PDF |
+| Persistance MySQL | Comptes, adhésions, commentaires et fichiers PDF vérifiés après redémarrage |
+| Interface desktop | Modes clair/sombre, visuels locaux, boutons à icônes, focus clavier et réduction des animations vérifiés |
+| Documentation | Liens locaux et cinq captures 1920 × 1080 vérifiés |
+
+Le parcours e-mail a été testé avec l’instance Mailpit locale existante. La configuration Docker Compose a été validée, mais le démarrage du conteneur reste à vérifier avec Docker Desktop actif. L’envoi par un fournisseur SMTP de production externe reste également à vérifier.
+
+### Régénérer les captures
+
+Avec les exemples MySQL présents, le backend démarré et Microsoft Edge installé :
 
 ```powershell
-$env:ISETFORUM_API_URL='http://127.0.0.1:8081'
-npm run test:browser
-# Redémarrer le même backend avec la même base, puis :
-npm run test:browser -- --read-only
+cd frontend
+npm run build
+npm run screenshots
 ```
 
-Le test utilise Microsoft Edge et PowerShell pour préparer un Excel unique. Il crée de vrais comptes et contenus, lit les liens de confirmation dans l’outbox locale et conserve ses identifiants dans frontend/artifacts/sprint4-verification.json. Configurer `ISETFORUM_DEV_OUTBOX` si le fichier diffère de backend/target/sprint4-test-confirmations.log. Captures et rapports restent ignorés par Git. Le scénario complet, les refus d’accès et la persistance des octets PDF après redémarrage ont été vérifiés. Le mode `--clean-check` vérifie une base ne contenant que l’administrateur, sans créer de données métier.
+Le script consulte le contenu existant et produit cinq images 16:9 dans `docs/images`. Configuration facultative : `ISETFORUM_API_URL`, `ISETFORUM_CAPTURE_EMAIL`, `ISETFORUM_CAPTURE_PASSWORD`.
 
-Les scripts des sprints précédents restent des références historiques et nécessitent leurs anciennes fixtures ; ils ne constituent plus la procédure de vérification de la livraison courante.
-
-Les bases dédiées utilisées pendant la livraison sont supprimées après validation ; la base principale conserve les exemples demandés pour explorer l’interface. Pour rejouer les tests, créer une base dédiée et lancer le scénario complet avant le mode `--read-only`.
-
-## Documentation
-
-- [Sprint 4 : règles, scénario et bilan](docs/sprint-4.md)
-- [Architecture](docs/architecture.md)
-- [Frontend Angular](frontend/README.md)
-- [Contribuer](CONTRIBUTING.md)
-- Historique : [sprint 2](docs/sprint-2.md), [sprint 3](docs/sprint-3.md)
-
-Le logo ISET est fourni par le projet. La référence Contra/Mobbin transmise sert d’inspiration visuelle ; les captures montrent les comptes fictifs et les données MySQL du profil de présentation.
-
-Pour régénérer ces images : démarrer le backend avec les exemples `dev,showcase`, puis exécuter `npm run build` et `npm run screenshots` depuis `frontend`. Microsoft Edge doit être installé. Le script ne crée ni ne modifie de contenu métier. Il utilise l’administrateur local ; les variables `ISETFORUM_API_URL`, `ISETFORUM_CAPTURE_EMAIL` et `ISETFORUM_CAPTURE_PASSWORD` permettent de changer le serveur ou le compte.
+Le logo ISET est fourni par le projet. Les visuels thématiques sont des SVG locaux. La référence Contra/Mobbin et les fils Reddit ont guidé la présentation.
