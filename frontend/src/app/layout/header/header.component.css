@@ -1,13 +1,119 @@
-:host { display:block; position:sticky; top:0; z-index:20; }
-.topbar { height:88px; padding:18px 28px; display:flex; align-items:center; gap:32px; background:var(--surface); border-bottom:1px solid var(--line); }
-.brand { display:flex; align-items:center; gap:11px; width:230px; flex-shrink:0; font-size:26px; font-weight:800; color:var(--navy); letter-spacing:-1px; }
-.brand img { width:42px; height:42px; object-fit:contain; background:#fff; border-radius:9px; }
-.brand-secondary,.brand b { color:var(--primary); }
-.global-search { display:flex; align-items:center; gap:12px; max-width:640px; flex:1; color:var(--muted); padding:11px 18px; background:var(--surface-tint); border:1px solid var(--line); border-radius:28px; }
-.global-search app-icon { width:19px; height:19px; }
-.global-search input { width:100%; min-width:0; border:0; outline:0; color:var(--text); background:transparent; font-size:15px; }
-.header-account { display:flex; align-items:center; gap:16px; margin-left:auto; }
-.campus-label { font-size:11px; font-weight:600; letter-spacing:1.7px; color:var(--muted); white-space:nowrap; }
-@media(max-width:1400px) { .topbar { padding:18px 24px; gap:24px; } .brand { width:200px; } }
-@media(max-width:1000px) { .brand { width:auto; } .campus-label { display:none; } }
-@media(max-width:700px) { .topbar { height:auto; flex-wrap:wrap; gap:14px; padding:14px 16px; } .brand { font-size:23px; } .brand img { width:36px; height:36px; } .global-search { order:3; flex-basis:100%; max-width:none; } .header-account { gap:8px; } }
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.masthead {
+  background: #173659;
+  color: #fff;
+  border-bottom: 1px solid #284d78;
+}
+:host-context([data-theme='dark']) .masthead {
+  background: #142d4a;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--forum-gap);
+  max-width: var(--forum-width);
+  min-height: calc(var(--masthead-height) - 1px);
+  padding: 0 var(--forum-gutter);
+  margin: 0 auto;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: 0 0 var(--forum-rail);
+  color: #fff;
+  line-height: 1.05;
+}
+.brand:hover { color: #fff; }
+.brand img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 5px;
+}
+.brand strong {
+  display: block;
+  font: 650 23px/1.05 'Source Serif 4', Georgia, serif;
+}
+.brand small {
+  display: block;
+  color: #c4d7ed;
+  margin-top: 4px;
+  font: 550 13px/1 'Source Sans 3', sans-serif;
+}
+.global-search {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  max-width: 440px;
+  padding: 0 12px;
+  color: #d0e0f4;
+  background: #24496f;
+  border: 1px solid #6483a5;
+  border-radius: 6px;
+}
+.global-search app-icon {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+}
+.global-search input {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 15px;
+  color-scheme: dark;
+}
+.global-search input::placeholder { color: #d0e0f4; }
+.global-search:focus-within, .masthead :is(a, button):focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.header-account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+.header-account .icon-button { color: #d0e0f4; }
+.header-account .icon-button:hover { background: #24496f; color: #fff; }
+.header-account .avatar { width: 44px; height: 44px; }
+.login-button {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #85a2c0;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.login-button:hover:not(:disabled) { background: #24496f; color: #fff; }
+@media (max-width: 760px) {
+  :host { position: static; }
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-block: 12px;
+  }
+  .brand { flex-basis: auto; }
+  .global-search { flex-basis: 100%; max-width: none; order: 1; }
+  .header-account { gap: 3px; }
+}
+@media (max-width: 370px) {
+  .brand strong { font-size: 19px; }
+  .brand img { width: 31px; height: 31px; }
+  .login-button { padding-inline: 8px; }
+}

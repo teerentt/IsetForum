@@ -1,26 +1,81 @@
-:host { display:block; min-width:0; }
-.workspace-card { display:flex; align-items:center; gap:12px; width:100%; padding:16px 12px; border:1px solid var(--line); border-radius:16px; background:var(--surface); text-align:left; margin-bottom:18px; }
-.workspace-card > span:nth-child(2) { min-width:0; }
-.workspace-card strong { display:block; font-size:14px; color:var(--navy); overflow-wrap:anywhere; }
-.workspace-card small { display:block; color:var(--muted); font-size:12px; margin-top:3px; }
-.workspace-arrow { margin-left:auto; color:var(--muted); font-size:24px; }
-.create-button { display:flex; align-items:center; justify-content:center; gap:9px; border-radius:28px; background:var(--strong-button); color:var(--strong-button-text); width:100%; padding:14px 10px; font-size:14px; font-weight:600; margin-bottom:34px; }
-.create-button:hover { background:var(--button); color:white; }
-.create-button app-icon { width:18px; height:18px; }
-.eyebrow { font-size:10px; letter-spacing:1.5px; color:var(--muted); margin:0 14px 12px; }
-.main-nav { display:grid; gap:6px; }
-.main-nav button { display:flex; align-items:center; gap:14px; width:100%; padding:13px 14px; border-radius:12px; text-align:left; font-size:16px; color:var(--muted); border:1px solid transparent; }
-.main-nav app-icon { width:21px; height:21px; }
-.main-nav button.selected { background:var(--surface); border-color:var(--line); color:var(--primary); font-weight:650; box-shadow:var(--shadow); }
-.main-nav button:hover,.community-shortcut:hover { background:var(--surface-hover); color:var(--primary); }
-.community-shortcuts { border-top:1px solid var(--line); margin-top:30px; padding-top:24px; }
-.community-shortcuts h2 { display:flex; align-items:center; justify-content:space-between; font:600 10px 'DM Sans',sans-serif; letter-spacing:1px; color:var(--muted); margin:0 12px 14px; }
-.community-shortcuts h2 span { font-size:12px; letter-spacing:0; }
-.community-shortcut { display:flex; align-items:center; gap:11px; width:100%; text-align:left; padding:10px; border-radius:10px; font-size:13px; line-height:1.5; }
-.community-mark { display:grid; place-items:center; width:30px; height:30px; border-radius:9px; background:var(--primary-soft); color:var(--primary); font-weight:650; flex-shrink:0; }
-.community-shortcut.current { background:var(--primary-soft); color:var(--primary); }
-.sidebar-footer { margin-top:30px; border-top:1px solid var(--line); padding:24px 12px 8px; }
-.sidebar-footer .text-link { font-size:13px; color:var(--muted); }
-.sidebar-footer app-icon { width:17px; height:17px; }
-.copyright { font-size:11px; color:var(--muted); margin-top:18px; line-height:1.9; }
-@media(max-width:800px) { .workspace-card,.create-button,.eyebrow,.community-shortcuts,.sidebar-footer { display:none; } .main-nav { display:flex; flex-wrap:wrap; gap:4px; } .main-nav button { width:auto; font-size:14px; padding:9px 10px; gap:8px; } .main-nav app-icon { width:18px; height:18px; } }
+:host { display: block; min-width: 0; }
+.sidebar button:focus-visible { outline-offset: -2px; }
+.main-nav {
+  display: grid;
+  gap: 4px;
+}
+.main-nav button, .community-shortcut, .session-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  text-align: left;
+  border-radius: 5px;
+  color: var(--muted);
+}
+.main-nav button {
+  font-size: 16px;
+  font-weight: 600;
+}
+.main-nav app-icon, .session-button app-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.main-nav button:hover, .community-shortcut:hover, .session-button:hover {
+  background: var(--surface-hover);
+  color: var(--primary);
+}
+.main-nav .selected, .community-shortcut.selected {
+  box-shadow: inset 3px 0 var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.community-shortcuts {
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 16px;
+}
+.community-shortcuts h2 {
+  color: var(--muted);
+  font: 650 14px/1.3 'Source Sans 3', sans-serif;
+  margin: 0 10px 6px;
+}
+.community-shortcut {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.community-shortcut app-community-visual { flex-shrink: 0; }
+.session-button {
+  margin-top: 18px;
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .sidebar { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+  .main-nav { display: flex; flex-wrap: wrap; }
+  .main-nav button, .session-button {
+    width: auto;
+    font-size: 14px;
+    gap: 6px;
+    padding-inline: 8px;
+  }
+  .community-shortcuts { display: none; }
+  .session-button { margin: 0; }
+}
+.publish-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  min-height: 44px;
+  padding: 6px 10px;
+  color: var(--primary);
+  font-weight: 650;
+}
+.publish-shortcut app-icon { width: 17px; height: 17px; }
+.publish-shortcut:hover { text-decoration: underline; }
+@media (max-width: 760px) {
+  .publish-shortcut { margin: 0; font-size: 14px; }
+}

@@ -1,1 +1,18 @@
-<article class="post-card panel"><div class="post-meta"><span class="avatar">{{ forum.initials(post().authorName) }}</span><div><strong>{{ post().authorName }}</strong><p>{{ post().createdAt | date:'dd/MM/yyyy à HH:mm' }}</p></div><a class="community-label" [routerLink]="['/forum/communautes', post().communityId]">{{ forum.community(post().communityId)?.name }}</a></div><a class="title-button" [routerLink]="['/forum/publications', post().id]"><h2>{{ post().title }}</h2></a><p class="post-excerpt">{{ post().content }}</p><div class="post-footer"><a class="text-link" [routerLink]="['/forum/publications', post().id]">Lire la discussion →</a>@if (post().authorId === forum.person()?.id) { <span class="muted">Votre publication</span> }</div></article>
+<article class="post-card">
+  @if (forum.community(post().communityId); as community) {
+    <a class="community-label" [routerLink]="['/forum/communautes', community.id]">{{ community.name }}</a>
+  }
+  <a class="title-button" [routerLink]="['/forum/publications', post().id]">
+    <h2>{{ post().title }}</h2>
+    <app-icon name="arrow" />
+  </a>
+  <p class="post-excerpt">{{ post().content }}</p>
+  <div class="post-meta">
+    <span class="author-name">{{ post().authorName }}</span>
+    <span aria-hidden="true">·</span>
+    <time [attr.datetime]="post().createdAt">{{ post().createdAt | date:"dd/MM/yyyy 'à' HH:mm" }}</time>
+    @if (post().authorId === forum.person()?.id) {
+      <span aria-hidden="true">·</span><span>Votre publication</span>
+    }
+  </div>
+</article>

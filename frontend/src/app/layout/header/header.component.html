@@ -1,7 +1,22 @@
-<header class="topbar">
-  <a class="brand" href="/forum/accueil" (click)="$event.preventDefault(); ui.navigate('feed')"><img src="assets/logo-iset.png" alt="ISET Radès" /><span>Iset<span class="brand-secondary">Forum</span><b>.</b></span></a>
-  <label class="global-search"><app-icon name="search" /><input type="search" aria-label="Rechercher" placeholder="Rechercher une discussion ou une communauté" [ngModel]="ui.query()" (ngModelChange)="searchFor($event)" /></label>
-  <div class="header-account"><span class="campus-label">ISET RADÈS</span><button class="icon-button" (click)="theme.toggle()" [attr.aria-label]="theme.theme() === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'"><app-icon [name]="theme.theme() === 'dark' ? 'sun' : 'moon'" /></button>
-    @if (forum.person(); as person) { <button class="avatar" aria-label="Mon profil" (click)="ui.navigate('profile')">{{ forum.initials(person.name) }}</button> } @else { <button class="primary-button" (click)="ui.login()">Se connecter</button> }
+<header class="masthead">
+  <div class="topbar">
+    <a class="brand" href="/forum/accueil" (click)="$event.preventDefault(); ui.navigate('feed')">
+      <img src="assets/logo-iset.png" alt="" />
+      <span><strong>IsetForum</strong><small>ISET Radès</small></span>
+    </a>
+    <label class="global-search">
+      <app-icon name="search" />
+      <input type="search" aria-label="Rechercher dans le forum" placeholder="Rechercher dans le forum" [ngModel]="ui.query()" (ngModelChange)="searchFor($event)" />
+    </label>
+    <div class="header-account">
+      <button class="icon-button" (click)="theme.toggle()" [attr.aria-label]="theme.theme() === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'">
+        <app-icon [name]="theme.theme() === 'dark' ? 'sun' : 'moon'" />
+      </button>
+      @if (forum.person(); as person) {
+        <button class="avatar" aria-label="Mon profil" (click)="ui.navigate('profile')">{{ forum.initials(person.name) }}</button>
+      } @else {
+        <button class="login-button" (click)="ui.login()">Se connecter</button>
+      }
+    </div>
   </div>
 </header>

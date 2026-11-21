@@ -1,17 +1,83 @@
 @if (community(); as community) {
   <button class="back-link" (click)="ui.navigate('communities')">← Toutes les communautés</button>
-  <section class="community-banner panel"><app-community-visual [name]="community.name" /><div class="community-heading"><span class="eyebrow accent-text">{{ community.visibility === 'PRIVATE' ? 'COMMUNAUTÉ PRIVÉE' : 'COMMUNAUTÉ PUBLIQUE' }}</span><span class="muted">{{ community.memberCount }} membres</span></div><h1>{{ community.name }}</h1><p>{{ community.description }}</p><div class="community-banner-footer">@if (community.creatorId === forum.person()?.id) { <span class="muted">Vous avez créé cette communauté.</span> } @else { <button class="secondary-button" [disabled]="ui.busy()" (click)="ui.membership(community)">{{ forum.status(community.id) === 'ACTIVE' ? 'Quitter la communauté' : forum.status(community.id) === 'PENDING' ? 'Annuler la demande' : 'Rejoindre la communauté' }}</button> }<button class="text-link" (click)="forum.load()">Actualiser</button></div></section>
-  @if (forum.canRead(community)) { <app-pdf-attachment kind="communities" [contentId]="community.id" [writable]="forum.person()?.role === 'ADMIN'" /> }
-} @else if (!ui.communityId()) { <div class="page-heading"><div><p class="eyebrow accent-text">VOTRE CAMPUS, VOS DISCUSSIONS</p><h1>Le fil du campus</h1><p>Les questions et les idées qui nous font avancer.</p></div></div> }
-@if (forum.error()) { <div class="error-state panel" role="alert"><p>{{ forum.error() }}</p><button class="secondary-button" (click)="forum.load()">Réessayer</button></div> }
-@else if (forum.loading()) { <p class="loading" role="status">Chargement des discussions…</p> }
-@else if (ui.communityId() && !community()) { <section class="empty-state panel"><h1>Communauté introuvable</h1><button class="secondary-button" (click)="ui.navigate('communities')">Découvrir les communautés</button></section> }
-@else if (community() && !forum.canRead(community()!)) { <section class="locked-state panel"><h2>Un espace réservé aux membres</h2><p>{{ forum.status(ui.communityId()) === 'PENDING' ? 'Votre demande attend l’approbation d’un administrateur.' : 'Rejoignez cette communauté pour lire les publications et télécharger ses documents.' }}</p><button class="secondary-button" (click)="forum.load()">Actualiser mon accès</button></section> }
-@else {
-  <section class="composer panel">
-    <div class="composer-main"><span class="avatar">{{ forum.person() ? forum.initials(forum.person()!.name) : '?' }}</span><button class="composer-prompt" (click)="ui.compose()">Une question ou une découverte à partager ?</button></div>
-    <div class="composer-footer"><p>Les bonnes discussions commencent ici.</p><button class="primary-button" (click)="ui.compose()">Publier</button></div>
+  <section class="community-banner panel">
+    <div class="community-heading">
+      <app-community-visual class="compact" [name]="community.name" />
+      <span class="visibility">
+        <app-icon [name]="community.visibility === 'PRIVATE' ? 'lock' : 'globe'" />
+        {{ community.visibility === 'PRIVATE' ? 'Privée' : 'Publique' }}
+        · {{ community.memberCount }} {{ community.memberCount === 1 ? 'membre' : 'membres' }}
+      </span>
+    </div>
+    <h1>{{ community.name }}</h1>
+    <p>{{ community.description }}</p>
+    <div class="community-actions">
+      @if (community.creatorId === forum.person()?.id) {
+        <span class="muted">Vous avez créé cette communauté.</span>
+      } @else {
+        <button class="secondary-button" [disabled]="ui.busy()" (click)="ui.membership(community)">
+          {{ forum.status(community.id) === 'ACTIVE' ? 'Quitter la communauté' : forum.status(community.id) === 'PENDING' ? 'Annuler la demande' : 'Rejoindre la communauté' }}
+        </button>
+      }
+      @if (forum.canRead(community)) {
+        <button class="primary-button" (click)="ui.compose()"><app-icon name="plus" />Publier</button>
+      } @else {
+        <button class="text-link" (click)="forum.load()">Actualiser</button>
+      }
+    </div>
   </section>
-  <div class="feed-toolbar"><div class="tabs"><button [class.active]="ui.feedFilter() === 'all'" (click)="ui.feedFilter.set('all')">Toutes les discussions</button>@if (forum.person() && !ui.communityId()) { <button [class.active]="ui.feedFilter() === 'joined'" (click)="ui.feedFilter.set('joined')">Mes communautés</button> }</div><button class="text-link" (click)="forum.load()">Actualiser</button></div>
-  <div class="post-list">@for (post of ui.posts(); track post.id) { <app-post-card [post]="post" /> } @empty { <section class="empty-state panel"><h2>{{ ui.query() ? 'Aucun résultat' : 'La discussion commence avec vous' }}</h2><p>{{ ui.query() ? 'Essayez un autre mot-clé.' : 'Rejoignez une communauté pour partager votre première publication.' }}</p><button class="secondary-button" (click)="ui.query() ? ui.query.set('') : ui.navigate('communities')">{{ ui.query() ? 'Effacer la recherche' : 'Explorer les communautés' }}</button></section> }</div>
+  @if (forum.canRead(community)) {
+    <app-pdf-attachment kind="communities" [contentId]="community.id" [writable]="forum.person()?.role === 'ADMIN'" />
+  }
+} @else if (!ui.communityId()) {
+  <div class="feed-heading">
+    <h1>Le fil du campus</h1>
+    <button class="primary-button" (click)="ui.compose()"><app-icon name="plus" />Publier</button>
+  </div>
+}
+@if (forum.error()) {
+  <div class="error-state panel" role="alert">
+    <p>{{ forum.error() }}</p>
+    <button class="secondary-button" (click)="forum.load()">Réessayer</button>
+  </div>
+} @else if (forum.loading()) {
+  <p class="loading" role="status">Chargement des discussions…</p>
+} @else if (ui.communityId() && !community()) {
+  <section class="empty-state panel">
+    <h1>Communauté introuvable</h1>
+    <button class="secondary-button" (click)="ui.navigate('communities')">Découvrir les communautés</button>
+  </section>
+} @else if (community() && !forum.canRead(community()!)) {
+  <section class="locked-state panel">
+    <h2>Un espace réservé aux membres</h2>
+    <p>{{ forum.status(ui.communityId()) === 'PENDING' ? 'Votre demande attend l’approbation d’un administrateur.' : 'Rejoignez cette communauté pour lire les publications et télécharger ses documents.' }}</p>
+    <button class="secondary-button" (click)="forum.load()">Actualiser mon accès</button>
+  </section>
+} @else {
+  <div class="feed-toolbar">
+    @if (forum.person() && !ui.communityId()) {
+      <div class="feed-filters" role="group" aria-label="Filtrer les discussions">
+        <button [attr.aria-pressed]="ui.feedFilter() === 'all'" (click)="ui.feedFilter.set('all')">Toutes les discussions</button>
+        <button [attr.aria-pressed]="ui.feedFilter() === 'joined'" (click)="ui.feedFilter.set('joined')">Mes communautés</button>
+      </div>
+    } @else {
+      <h2 class="feed-label">{{ ui.communityId() ? 'Discussions' : 'Dernières discussions' }}</h2>
+    }
+    <button class="text-link" (click)="forum.load()">Actualiser</button>
+  </div>
+  <div class="post-list">
+    @for (post of ui.posts(); track post.id) {
+      <app-post-card [post]="post" />
+    } @empty {
+      <section class="empty-state">
+        <h2>{{ ui.query().trim() ? 'Aucun résultat' : 'Aucune discussion pour le moment' }}</h2>
+        @if (ui.query().trim()) {
+          <p>Essayez un autre mot-clé.</p>
+          <button class="secondary-button" (click)="ui.query.set('')">Effacer la recherche</button>
+        } @else {
+          <button class="secondary-button" (click)="ui.navigate('communities')">Explorer les communautés</button>
+        }
+      </section>
+    }
+  </div>
 }

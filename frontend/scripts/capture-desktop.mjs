@@ -50,15 +50,21 @@ try {
   await page.getByRole('button', { name: 'Se connecter', exact: true }).click();
   await page.locator('.post-card').first().waitFor();
   const geometry = await page.evaluate(() => {
-    const main = document.querySelector('.main-content').getBoundingClientRect();
-    return { left: document.querySelector('app-sidebar').getBoundingClientRect().left,
-      right: document.querySelector('.context-sidebar').getBoundingClientRect().right,
-      center: main.left + main.width / 2, width: document.documentElement.clientWidth,
-      scrollWidth: document.documentElement.scrollWidth };
+    const bounds = selector => document.querySelector(selector).getBoundingClientRect();
+    const frame = bounds('.app-layout');
+    return {
+      leftInset: frame.left,
+      rightInset: document.documentElement.clientWidth - frame.right,
+      leftGap: bounds('.main-content').left - bounds('app-sidebar').right,
+      rightGap: bounds('.context-sidebar').left - bounds('.main-content').right,
+      width: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth
+    };
   });
-  assert.equal(geometry.left, 0);
-  assert.equal(geometry.right, geometry.width);
-  assert.equal(geometry.center, geometry.width / 2);
+  assert.ok(geometry.leftInset > 0);
+  assert.ok(Math.abs(geometry.leftInset - geometry.rightInset) <= 1);
+  assert.ok(geometry.leftGap > 0);
+  assert.ok(Math.abs(geometry.leftGap - geometry.rightGap) <= 1);
   assert.equal(geometry.scrollWidth, geometry.width);
   await capture('forum-light.png');
   await page.getByRole('button', { name: 'Activer le mode sombre', exact: true }).click();

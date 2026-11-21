@@ -215,9 +215,9 @@ try {
     await studentPage.screenshot({path:'artifacts/sprint4-discussion-light.png',fullPage:true});
     await studentPage.getByRole('button',{name:'Activer le mode sombre',exact:true}).click();
     await studentPage.screenshot({path:'artifacts/sprint4-discussion-dark.png',fullPage:true});
-    await studentPage.locator('.main-nav').getByRole('button',{name:'Mon fil',exact:true}).click();
+    await studentPage.locator('.main-nav').getByRole('button',{name:'Fil du campus',exact:true}).click();
     await studentPage.locator('.post-card').filter({hasText:title}).waitFor();
-    await studentPage.getByRole('searchbox',{name:'Rechercher',exact:true}).fill('introuvable-'+suffix);
+    await studentPage.getByRole('searchbox',{name:'Rechercher dans le forum',exact:true}).fill('introuvable-'+suffix);
     await studentPage.getByRole('heading',{name:'Aucun résultat',exact:true}).waitFor();
     await studentPage.getByRole('button',{name:'Effacer la recherche',exact:true}).click();
     await studentPage.screenshot({path:'artifacts/sprint4-feed-dark.png',fullPage:true});

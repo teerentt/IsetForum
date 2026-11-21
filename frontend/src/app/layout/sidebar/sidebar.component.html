@@ -1,24 +1,28 @@
 <aside class="sidebar" aria-label="Navigation latérale">
-  @if (forum.person(); as person) {
-    <button class="workspace-card" (click)="ui.navigate('profile')"><span class="avatar">{{ forum.initials(person.name) }}</span><span><strong>{{ person.name }}</strong><small>{{ person.role === 'ADMIN' ? 'Administrateur' : person.role === 'PROFESSOR' ? 'Enseignant' : 'Étudiant' }}</small></span><span class="workspace-arrow" aria-hidden="true">›</span></button>
-  } @else {
-    <button class="workspace-card" (click)="ui.login()"><span class="avatar"><app-icon name="user" /></span><span><strong>Bienvenue au campus</strong><small>Connectez-vous pour participer</small></span></button>
-  }
-  <button class="create-button" (click)="ui.compose()"><app-icon name="plus" />Créer une publication</button>
-  <p class="eyebrow">VOTRE ESPACE</p>
   <nav class="main-nav" aria-label="Navigation principale">
-    <button [class.selected]="ui.view() === 'feed' && !ui.communityId()" (click)="ui.navigate('feed')"><app-icon name="home" />Mon fil</button>
-    <button [class.selected]="ui.view() === 'communities' || !!ui.communityId()" (click)="ui.navigate('communities')"><app-icon name="users" />Communautés</button>
-    @if (forum.person()) { <button [class.selected]="ui.view() === 'profile'" (click)="ui.navigate('profile')"><app-icon name="user" />Mon profil</button> }
-    @if (forum.person()?.role === 'ADMIN') { <button [class.selected]="ui.view() === 'admin'" (click)="ui.navigate('admin')"><app-icon name="shield" />Administration</button> }
+    <button [class.selected]="ui.view() === 'feed' && !ui.communityId()" [attr.aria-current]="ui.view() === 'feed' && !ui.communityId() ? 'page' : null" (click)="ui.navigate('feed')"><app-icon name="home" />Fil du campus</button>
+    <button [class.selected]="ui.view() === 'communities' || !!ui.communityId()" [attr.aria-current]="ui.view() === 'communities' ? 'page' : null" (click)="ui.navigate('communities')"><app-icon name="users" />Communautés</button>
+    @if (forum.person()) {
+      <button [class.selected]="ui.view() === 'profile'" [attr.aria-current]="ui.view() === 'profile' ? 'page' : null" (click)="ui.navigate('profile')"><app-icon name="user" />Mon profil</button>
+    }
+    @if (forum.person()?.role === 'ADMIN') {
+      <button [class.selected]="ui.view() === 'admin'" [attr.aria-current]="ui.view() === 'admin' ? 'page' : null" (click)="ui.navigate('admin')"><app-icon name="shield" />Administration</button>
+    }
   </nav>
+  @if (ui.view() !== 'feed') {
+    <button class="publish-shortcut" (click)="ui.compose()"><app-icon name="plus" />Publier</button>
+  }
   @if (ui.joined().length) {
-    <section class="community-shortcuts"><h2>MES COMMUNAUTÉS <span>{{ ui.joined().length }}</span></h2>
-    @for (community of ui.joined(); track community.id) { <button class="community-shortcut" [class.current]="ui.communityId() === community.id" (click)="ui.openCommunity(community)"><app-community-visual class="compact" [name]="community.name" /><span>{{ community.name }}</span></button> }
+    <section class="community-shortcuts" aria-labelledby="joined-title">
+      <h2 id="joined-title">Mes communautés</h2>
+      @for (community of ui.joined(); track community.id) {
+        <button class="community-shortcut" [class.selected]="ui.communityId() === community.id" [attr.aria-current]="ui.communityId() === community.id ? 'page' : null" (click)="ui.openCommunity(community)">
+          <app-community-visual class="compact" [name]="community.name" /><span>{{ community.name }}</span>
+        </button>
+      }
     </section>
   }
-  <footer class="sidebar-footer">
-    @if (forum.person()) { <button class="text-link" (click)="ui.logout()"><app-icon name="logout" />Se déconnecter</button> } @else { <button class="text-link" (click)="ui.login()">Rejoindre la conversation →</button> }
-    <p class="copyright">Le forum de votre institut.<br>IsetForum · ISET Radès</p>
-  </footer>
+  @if (forum.person()) {
+    <button class="session-button" (click)="ui.logout()"><app-icon name="logout" />Se déconnecter</button>
+  }
 </aside>
